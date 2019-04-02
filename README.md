@@ -10,10 +10,14 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 
 To install all of this, follow the steps:
 
-1. install from 
-https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20171213
+1. The first step is ideally done on another Linux box. If you don't have one yet (what ???), better to migrate to Linux as soon as you can
 
-2. md5sum ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz
+... Download an image from https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203
+
+2. Check your image is valid with `md5sum`
+```bash
+md5sum ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz
+```
 
 ...and check it corresponds to http://de.eu.odroid.in/ubuntu_16.04lts/ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz.md5sum
 
