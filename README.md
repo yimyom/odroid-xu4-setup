@@ -35,9 +35,11 @@ To install all of this, follow the steps:
 	lsblk
 	```
 
-	*WARNING*
+	**WARNING**
+
 	Let's assume your SD card is on /dev/sdX. Be very careful to choose the correct device or you will risk to erase the content of another disk.
-	*WARNING*
+
+	**WARNING**
 
 6. write the image to the SD card
 
