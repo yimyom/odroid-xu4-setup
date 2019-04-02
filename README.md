@@ -22,7 +22,11 @@ To install all of this, follow the steps:
    md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
    ```
 
-3. xz -d ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz
+3. Assuming you're doing all of this on a Linux box, decompress the file you downloaded:
+
+   ```sh
+   xz -d ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz
+   ```
 
 4. plugin sd card in usb port
 5. search for the device with lsblk
