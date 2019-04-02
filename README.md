@@ -15,8 +15,9 @@ To install all of this, follow the steps:
    Download an image from https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203
 
 2. Check your image is valid with `md5sum`
+
 ```bash
-   md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
+md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
 ```
    and compare the result with the corresponding m5sum file you can find here: https://odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/
 
