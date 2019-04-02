@@ -28,8 +28,15 @@ To install all of this, follow the steps:
    xz -d ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz
    ```
 
-4. plugin sd card in usb port
-5. search for the device with lsblk
+4. Plugin your SD card on a USB port of your Linux box
+5. Search for the device with `lsblk`
+
+   ```bash
+   lsblk
+   ```
+
+	dkjfsldfkj
+
 6. write the image
    dd if=ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img of=/dev/sdXXX bs=1M conv=fsync
    where XXX is your device
