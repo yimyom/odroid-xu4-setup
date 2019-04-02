@@ -18,9 +18,9 @@ To install all of this, follow the steps:
 
    and compare the result with the corresponding m5sum file you can find here: https://odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/
 
-```bash
-md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
-```
+   ```bash
+   md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
+   ```
 
 3. xz -d ubuntu-16.04.3-4.14-minimal-odroid-xu4-20171213.img.xz
 
