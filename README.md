@@ -12,7 +12,7 @@ To install all of this, follow the steps:
 
 1. The first step is ideally done on another Linux box. If you don't have one yet (what ???), better to migrate to Linux as soon as you can
 
-... Download an image from https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203
+...Download an image from https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203
 
 2. Check your image is valid with `md5sum`
 ```bash
