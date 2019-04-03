@@ -88,7 +88,7 @@ To install all of this, follow the steps:
 
 16. Install gl4es
 
-In a terminal, install the following development tools:
+	In a terminal, install the following development tools:
 
 	```bash
 	sudo apt install git cmake xorg-dev gcc g++ build-essential
