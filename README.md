@@ -41,7 +41,7 @@ To install all of this, follow the steps:
 
 	**WARNING**
 
-6. write the image to the SD card
+6. Write the image to the SD card
 
 	```bash
 	sudo dd if=ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz of=/dev/sdX bs=1M conv=fsync
@@ -54,90 +54,105 @@ To install all of this, follow the steps:
 	sudo umount /dev/sdX
 	```
 
-8. insert your sdcard in your odroid XU4 and boot.
-	Then login on the desktop.
-	The next stage is to remove direct desktop login and replace it with kodi
+8. Insert your SD card in your odroid XU4 and boot it up
 
-9. login on the desktop with the default user (odroid)
-10. open a terminal (search in the menu on the top-left of the screen)
-11. update the packages
+	Then login on the desktop with the credentials as given at https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#access_credentials
+
+	At this stage you have a fully functional ODroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set
+
+10. Open a terminal (search in the menu on the top-left of the screen)
+
+11. Update the packages
+
+	```bash
 	sudo apt update
 	sudo apt upgrade
 	sudo apt dist-upgrade
+	```
 
-	At each time, it might ask your for the odroid password. It's "odroid".
-	You might want to change it for safety reasons
-	In the terminal, you can type
-	passwd
-	then answer the questions (old and new password)
-	Next time, use this password
+	During the update, the first time you boot your machine, you may get an error regarding a lock file with dpkg (/var/lib/dpkg/lock), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again.
 
-	During the update, the first time you boot your machine, you may get an error regarding a lock file with dpkg (/var/lib/dpkg/lock), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again from step 11.
-
-	During your update, if you get a message about boot.ini being replaced, just say 'OK'
+	During the update, if you get a message about boot.ini being replaced, just say 'OK'
 
 	During the update, if you get a question about /etc/apt-fast.conf, answer Y (for Yes)
 
-13. login again and open a terminal (see step 10)
-14. Kodi is installed by default
-15. Mali driver is installed by default and works well. Go in a terminal and run
-	glmark2-es2 and you should see a demo (a horse). FPS should be around 300 frames/second
-	run glmark2 and you should see the same demo. FPS should be around 30 frames/second.
-	The difference is due to the fact that the Mali driver only supports OpenGL ES and not plain OpenGL
-	There is a solution for that
+14. The good news is that kodi installed by default. Kodi is installed by default. But if by any chance it is not (?), you can install it with:
+
+	```bash
+	sudo apt install kodi kodi-bin kodi-data
+	```
+
+15. The Mali graphical driver is installed by default and works well. Go in a terminal and run
+	`glmark2-es2` and you should see a demo (a horse). FPS should be around 300 frames/second
+	run `glmark2` and you should see the same demo. FPS should be around 30 frames/second. Terrible! The reason is because the Mali driver only supports OpenGL ES (Embedded System) and not plain OpenGL. The solution is to use a library called [gl4es](https://github.com/ptitSeb/gl4es), which you can find on Github.
 
 16. Install gl4es
 
-In a terminal again:
-	cd
-	sudo apt install git cmake xorg-dev
+In a terminal, install the following development tools:
 
-	get the source code for a library wrapping OpenGL to OpenGL-ES
+	```bash
+	sudo apt install git cmake xorg-dev gcc g++ build-essential
+	```
+
+	Get the source code of gl4es. So, gl4es is an implementation of OpenGL using ... OpenGL ES (instead of implementing the library directly). So for systems like ODroid XU4 with a driver supporting only OpenGL ES, it is possible to use software based on OpenGL too with hardware acceleration:
+
+	```bash
 	git clone https://github.com/ptitSeb/gl4es.git
 	cd gl4es
+	```
 
-	Let's compile it now
+	And compile it:
+	```bash
 	mkdir build
 	cd build
 	cmake .. -DODROID=1
 	make
+	```
 
-	It will compile and display its progress.
-	If you see this at the end:
+	It will compile and display its progress with a lot of messages. Toward the end, if the compilation has been successfull, you should see the following:
+	```
 	[ 96%] Building C object src/CMakeFiles/GL.dir/glx/utils.c.o
 	[ 98%] Linking C shared library ../lib/libGL.so.1
 	[100%] Built target 
+	```
 
-	Then it's a success and you can proceed to the next step
+	Save the Mesa version of OpenGL (the one installed by default):
 
-	Save the mesa version of OpenGL (the one installed by default)
-
+	```bash
 	sudo mv /usr/lib/arm-linux-gnueabihf/libGL.so.1 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1
 	sudo mv /usr/lib/arm-linux-gnueabihf/libGL.so.1.0.0 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1.0.0
+	```
 
-	and copy your new version
+	and copy your new compiled version:
+	```bash
 	sudo cp lib/libGL.so.1 /usr/lib/arm-linux-gnueabihf/
 	sudo ldconfig
+	```
 
-	Now check that everything is fine by running
+	Now check that everything is fine by running:
+	```bash
 	glxinfo|head -6
+	```
 
-	If you see 
+	If you see the following, then you're good to go:
+	```
 	LIBGL: Initialising gl4es
 	LIBGL: v1.1.1 built on Mar 28 2019 06:22:26
 	LIBGL: Using GLES 2.0 backend
 	LIBGL: loaded: libGLESv2.so
 	LIBGL: loaded: libEGL.so
 	LIBGL: Using GLES 2.0 backend
-
+	```
 	(of course the date on the second line will be different for you)
 
-	if you run
+	Now you can run glmark2 again:
+	```bash
 	glmark2
+	```
 
-	this time you should see FPS around 300
+	and this time you should see FPS around 300.
 
-	and now your ODroid-XU4 has full opengl/opengl-es support
+	At this stage, your ODroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
 19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user 'kodi'
 	adduser --disabled-password --gecos "" kodi
