@@ -206,13 +206,14 @@ To install all of this, follow the steps:
 	EOF
 	```
 
-23. Enable Kodi at boot
+23. Enable Kodi at boot time:
+
+	```bash
 	sudo systemctl enable kodi
 	sudo systemctl set-default multi-user.target
+	```
 
-24. Install usbmount to add external drives automatically
-	sudo apt install usbmount
-	This is not mandatory but very helpful
+24.	**From now on you have a fully functional Kodi system**. If you want to reboot, your ODroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, you can follow the rest.
 
 25. From here you have a fully functional Kodi box which you can use directly
 If you reboot with
