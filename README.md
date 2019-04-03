@@ -246,13 +246,16 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 
 	There is a bug in the version 0.0.22 of `usbmount` as provided by the stock Ubuntu Linux when connecting 2 USB drives at the same time. The bug has been fixed with `usbmount 0.0.24` which is not yet on the Ubuntu repository. You can upgrade it manually, if you like:
 
-	If your second drive (or even the first) doesn't mount properly when you plug it in, you can try to upgrade usbmount as follows:
+	If your second drive (or even the first) doesn't mount properly when you plug it in, you can try to upgrade `usbmount` as follows:
+
+	```bash
 	git clone https://github.com/rbrito/usbmount.git
 	cd usbmount
 	sudo apt-get update && sudo apt-get install -y debhelper build-essential
 	dpkg-buildpackage -us -uc -b
 	cd ..
 	sudo dpkg -i usbmount_0.0.24_all.deb
+	```
 
 27. Install MAME
 	sudo apt install mame mame-data mame-doc mame-extra mame-tools
