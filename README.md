@@ -154,24 +154,38 @@ To install all of this, follow the steps:
 
 	At this stage, your ODroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
-19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user 'kodi'
-	adduser --disabled-password --gecos "" kodi
+19. For security reason, kodi and its associated programs will be run by a user with limited priviledges, with no password and automatic login. We will call the user `kodi`:
 
+	```bash
+	sudo adduser --disabled-password --gecos "" kodi
+	```
+
+	The output will be:
+	```
 	Adding user `kodi' ...
 	Adding new group `kodi' (1000) ...
 	Adding new user `kodi' (1000) with group `kodi' ...
 	Creating home directory `/home/kodi' ...
 	Copying files from `/etc/skel' ...
+	```
 
-20. assign some privileges to this user
+20. Assign some priviledges to this user:
+
+	```bash
 	usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse kodi
+	```
 
-21. Add options to allow Kodi to start it owns X server
-	sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
-	sed -ie "\$aneeds_root_rights = yes" /etc/X11/Xwrapper.config
+21. Add options to allow Kodi to start it owns X server:
 
-22. Add the kodi service to systemd
-	cat > /etc/systemd/system/kodi.service <<EOF
+	```bash
+	sudo sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
+	sudo sed -ie "\$aneeds_root_rights = yes" /etc/X11/Xwrapper.config
+	```
+
+22. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
+
+	```bash
+	sudo cat > /etc/systemd/system/kodi.service <<EOF
 	[Unit]
 	Description = Kodi Media Center
 
@@ -190,6 +204,7 @@ To install all of this, follow the steps:
 	[Install]
 	WantedBy = multi-user.target
 	EOF
+	```
 
 23. Enable Kodi at boot
 	sudo systemctl enable kodi
