@@ -8,6 +8,11 @@ How to set up an ODroid XU4 with Kodi, Mame and an external USB drive
 I describe all the steps to install Ubuntu Linux on an ODroid XU4 and use it as a media and game center using Kodi and Mame.
 Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine
 
+##### Table of contents
+[Install Linux and Kodi on your ODroid XU4](#section_1)
+[Install a USB external drive on your ODroid XU4](#section_2)
+
+<a name='section_1'/>
 ## Install Linux and Kodi on your ODroid XU4
 
 To install all of this, follow the steps:
@@ -233,6 +238,7 @@ In the next sections, I'll show you how to:
 
 Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your ODroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
 
+<a name='section_2'/>
 ## Install a USB external drive on your ODroid XU4
 
 
