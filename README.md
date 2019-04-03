@@ -10,7 +10,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 
 ##### Table of contents
 1. [Install Linux and Kodi on your ODroid XU4](#Install-Linux-and-Kodi-on-your-ODroid-XU4)<br/>
-2. [Install a USB external drive on your ODroid XU4](#Install-a-USB-external-drive-on-your-ODroid-XU4)<br/>
+2. [Install an USB external drive on your ODroid XU4](#Install-an-USB-external-drive-on-your-ODroid-XU4)<br/>
 
 ## Install Linux and Kodi on your ODroid XU4
 
@@ -34,7 +34,7 @@ To install all of this, follow the steps:
 	xz -d ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
 	```
 
-4. Plugin your SD card on a USB port of your Linux box
+4. Plugin your SD card on an USB port of your Linux box
 5. Search for the device with `lsblk`
 
 	```bash
@@ -237,7 +237,7 @@ In the next sections, I'll show you how to:
 
 Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your ODroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
 
-## Install a USB external drive on your ODroid XU4
+## Install an USB external drive on your ODroid XU4
 
 
 1. Switch to a terminal or login with `ssh`.
@@ -270,7 +270,7 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 
 28. Install Advanced Mame Launcher plugin from Kodi
 	It's best to follow the guide on https://forum.kodi.tv/showthread.php?tid=304186
-	What I did was to plug-in a USB drive to my machine to store all the (very big) data required by Mame. You will need hundred of Gb if not more and it's more than the SD card in my Odroid XU4 can hold.
+	What I did was to plug-in an USB drive to my machine to store all the (very big) data required by Mame. You will need hundred of Gb if not more and it's more than the SD card in my Odroid XU4 can hold.
 
 	If you already rebooted your Odroid XU4, there are 2 ways to access to a terminal now
 	 1. Ctrl+Alt+F1 will switch to a Linux text terminal. Then you can log in with your odroid user
