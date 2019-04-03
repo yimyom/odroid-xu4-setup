@@ -215,6 +215,12 @@ To install all of this, follow the steps:
 
 24.	**From now on you have a fully functional Kodi system**. If you want to reboot, your ODroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, you can follow the rest.
 
+	If you want to stop and enjoy your ODroid XU4 now, you can reboot it:
+
+	```bash
+	sudo reboot
+	```
+
 25. From here you have a fully functional Kodi box which you can use directly
 If you reboot with
 	sudo reboot
