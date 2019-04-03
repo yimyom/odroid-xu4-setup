@@ -262,7 +262,7 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 	sudo dpkg -i usbmount_0.0.24_all.deb
 	```
 
-## Install MAME to play old (and new games) from Kodi
+## Install MAME to play arcade games from Kodi
 
 This section is long and will require external resources if you want to have all the bells and whistles of a full-featured MAME installation. From time to time, we will refer to external guides too.
 
