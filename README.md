@@ -161,7 +161,7 @@ To install all of this, follow the steps:
 
 	At this stage, your ODroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
-19. For security reason, kodi and its associated programs will be run by a user with limited priviledges, with no password and automatic login. We will call the user `kodi`:
+19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
 
 	```bash
 	sudo adduser --disabled-password --gecos "" kodi
@@ -176,13 +176,13 @@ To install all of this, follow the steps:
 	Copying files from `/etc/skel' ...
 	```
 
-20. Assign some priviledges to this user:
+20. Assign some privileges to this user:
 
 	```bash
 	usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse kodi
 	```
 
-21. Add options to allow Kodi to start it owns X server:
+21. Add options to allow Kodi to start its own X server:
 
 	```bash
 	sudo sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
@@ -305,7 +305,11 @@ This section is long and will require external resources if you want to have all
 
 	```bash
 	sudo su - kodi
-	cd /media/usb/mame
+	cd /media/usb/mame/AML-assets
+	
+	wget http://www.progettosnaps.net/catver/ -q -O - | grep 'download?tipo=catver' | sed "s#.*href=\"\(.*\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	unzip -jq file.zip *.ini
+	rm file.zip
 
 	exit
 	```
