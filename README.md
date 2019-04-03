@@ -285,7 +285,7 @@ This section is long and will require external resources if you want to have all
 
 	1. Assuming you're on a text terminal (see above on how to switch to a text terminal from Kodi), the first step is to create directories to store MAME data. The external USB drive is mounted to `/media/usb0` and by default to `/media/usb` too. We will assume it's the case from now on.
 
-	We now create the directory structure as required by AML for MAME:
+	2. We now create the directory structure as required by AML for MAME:
 
 	```bash
 	cd /media/usb
