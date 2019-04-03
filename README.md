@@ -8,6 +8,8 @@ How to set up an ODroid XU4 with Kodi, Mame and an external USB drive
 I describe all the steps to install Ubuntu Linux on an ODroid XU4 and use it as a media and game center using Kodi and Mame.
 Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine
 
+## Install Linux and Kodi on your ODroid XU4
+
 To install all of this, follow the steps:
 
 1. The first step is ideally done on another Linux box. If you don't have one yet (what ???), better to migrate to Linux as soon as you can
@@ -221,22 +223,29 @@ To install all of this, follow the steps:
 	sudo reboot
 	```
 
-25. From here you have a fully functional Kodi box which you can use directly
-If you reboot with
-	sudo reboot
-you will have land on Kodi directly. If you want to install more features, stay on the terminal
+In the next sections, I'll show you how to:
+- install an external USB drive and have it automounted (for Kodi or Mame for example),
+- install and configure Mame and use it from Kodi
+- install and configure a joystick for Mame
+- remove software and services which are not necessary and use memory and CPU cycle for nothing
+- add firewall rules to set up the web connection for Kodi and use one of the many Android/iOS apps to control Kodi
+- create a swapfile to add extra virtual memory to your system
 
-	We are going on to the optional features now:
-	- USB drive automount to store whatever you need to store for Kodi, Mame, etc...
-	- Install and configure Mame from Kodi
-	- Install and configure Joystick for Kodi
-	- Remove some features to save memory and CPU cycle (a little bit)
-	- firewall rules to set up the web connection for Kodi and use one of the many Android/iOS apps to control Kodi
-	- create a swapfile
+Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your ODroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
 
-26. Install USB drive automount
+## Install a USB external drive on your ODroid XU4
+
+
+1. Switch to a terminal or login with `ssh`.
+
+2. Install `usbmount` to automount USB drives:
+
+	```bash
 	sudo apt install usbmount
-	I found a bug in the version 0.0.22 of usbmount when connecting 2 drives. The bug has been fixed with usbmount 0.0.24.
+	```
+
+	There is a bug in the version 0.0.22 of `usbmount` as provided by the stock Ubuntu Linux when connecting 2 USB drives at the same time. The bug has been fixed with `usbmount 0.0.24` which is not yet on the Ubuntu repository. You can upgrade it manually, if you like:
+
 	If your second drive (or even the first) doesn't mount properly when you plug it in, you can try to upgrade usbmount as follows:
 	git clone https://github.com/rbrito/usbmount.git
 	cd usbmount
