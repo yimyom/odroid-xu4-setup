@@ -11,6 +11,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 ##### Table of contents
 1. [Install Linux and Kodi on your ODroid XU4](#Install-Linux-and-Kodi-on-your-ODroid-XU4)<br/>
 2. [Install an USB external drive on your ODroid XU4](#Install-an-USB-external-drive-on-your-ODroid-XU4)<br/>
+3. [Install Linux and Kodi on your ODroid XU4](#Install-Linux-and-Kodi-on-your-ODroid-XU4)<br/>
 
 ## Install Linux and Kodi on your ODroid XU4
 
@@ -261,7 +262,11 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 	sudo dpkg -i usbmount_0.0.24_all.deb
 	```
 
-27. Install MAME
+## Install MAME to play old (and new games) from Kodi
+
+This section is long and will require external resources if you want to have all the bells and whistles of a full-featured MAME installation. From time to time, we will refer to external guides too.
+
+1. Install MAME
 	sudo apt install mame mame-data mame-doc mame-extra mame-tools
 
 	Change mame driver to opengles
