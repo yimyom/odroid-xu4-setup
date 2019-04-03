@@ -267,38 +267,49 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 This section is long and will require external resources if you want to have all the bells and whistles of a full-featured MAME installation. From time to time, we will refer to external guides too.
 
 1. Install MAME
-	sudo apt install mame mame-data mame-doc mame-extra mame-tools
 
-	Change mame driver to opengles
-	(If someone has a solution to make it work with OpenGL and gl4es, please contact me)
+	```bash
+	sudo apt install mame mame-data mame-doc mame-extra mame-tools
+	```
+
+	Change the mame rendingir driver to OpenGL ES.
+	For some reasons, the OpenGL driver (through `gl4es`) didn't work. If someone has a better solution, please contact me and share.
+
+	```bash
 	sudo sed -i 's/opengl/opengles/' /etc/mame/mame.ini
+	```
 
 28. Install Advanced Mame Launcher plugin from Kodi
-	It's best to follow the guide on https://forum.kodi.tv/showthread.php?tid=304186
-	What I did was to plug-in an USB drive to my machine to store all the (very big) data required by Mame. You will need hundred of Gb if not more and it's more than the SD card in my Odroid XU4 can hold.
 
-	If you already rebooted your Odroid XU4, there are 2 ways to access to a terminal now
-	 1. Ctrl+Alt+F1 will switch to a Linux text terminal. Then you can log in with your odroid user
-	 2. From another machine you can ssh to your Odroid XU4. If you don't know what it means, better to learn as ssh is an incredibly powerful and useful tool to know
+	We're going to follow the official guide of a Kodi plugin called [Advanced Mame Launcher (AML)](https://forum.kodi.tv/showthread.php?tid=304186) and adapt a few steps to follow our setup. Here, I assume that we have an external USB drive connected to the Odroid XU4. It will be helpful to store data for MAME.
 
-What I did to make AML works is as follows: first of all, I login onto my odroid user (as described above)
-Then, I will assume for the following that I have a drive connected to the USB port and this drive is identified by /media/usb
+	1. Assuming you're on a text terminal (see above on how to switch to a text terminal from Kodi), the first step is to create directories to store MAME data. The external USB drive is mounted to `/media/usb0` and by default to `/media/usb` too. We will assume it's the case from now on.
 
-cd /media/usb
-sudo mkdir mame
-sudo chown kodi.kodi mame
-sudo su - kodi
-cd /media/usb/mame
-mkdir -p AML-ROMs AML-asset AML-CHDs AML-SL-ROMs AML-SL-CHDs AML-assets/samples/
-cd AML-assets
-mkdir artpreviews artwork cabinets clearlogos covers_SL cpanels fanarts fanarts_SL flyers manuals manuals_SL marquees PCBs snaps snaps_SL titles titles_SL videosnaps videosnaps_SL
-cd
-ln -s /media/usb/mame/* .
-exit
+	We now create the directory structure as required by AML for MAME:
 
-(the last exit brings you back to your odroid user)
+	```bash
+	cd /media/usb
+	sudo mkdir mame
+	sudo chown kodi.kodi mame
+	sudo su - kodi
+	cd /media/usb/mame
+	mkdir -p AML-ROMs AML-asset AML-CHDs AML-SL-ROMs AML-SL-CHDs AML-assets/samples/
+	cd AML-assets
+	mkdir artpreviews artwork cabinets clearlogos covers_SL cpanels fanarts fanarts_SL flyers manuals manuals_SL marquees PCBs snaps snaps_SL titles titles_SL videosnaps videosnaps_SL
+	cd
+	ln -s /media/usb/mame/* .
+	exit
+	```
+	
+	2. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186:
 
-This is the structure for running AML in Kodi. You will have to fill in those directories with data as described in https://forum.kodi.tv/showthread.php?tid=304186
+	```bash
+	sudo su - kodi
+	cd /media/usb/mame
+
+	exit
+	```
+
 
 Next we need to modify mame.ini to reflect this directories' structure:
 
