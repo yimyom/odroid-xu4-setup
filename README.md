@@ -10,7 +10,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 
 ##### Table of contents
 1. [Install Linux and Kodi on your ODroid XU4](#Install-Linux-and-Kodi-on-your-ODroid-XU4)<br/>
-2. [Install a USB external drive on your ODroid XU4](#section_2)<br/>
+2. [Install a USB external drive on your ODroid XU4](#Install-a-USB-external-drive-on-your-ODroid-XU4)<br/>
 
 ## Install Linux and Kodi on your ODroid XU4
 
