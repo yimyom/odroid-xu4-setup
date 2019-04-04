@@ -318,7 +318,7 @@ This section is long and will require external resources if you want to have all
 
 	# bestgames.ini
 	wget http://www.progettosnaps.net/bestgames/ -q -O - | grep 'download?tipo=bestgames' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
-	unzip -jq file.zip bestgames.ini
+	unzip -jq file.zip '*.ini'
 	rm file.zip
 
 	# series.ini
