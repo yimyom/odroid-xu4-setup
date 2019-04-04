@@ -349,14 +349,14 @@ This section is long and will require external resources if you want to have all
 
 	exit
 	```
-29.  Next we need to modify mame.ini to reflect this directories' structure:
+29.  Next we need to modify `mame.ini` to reflect this directories' structure:
 
-	```bash
-	sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
-	sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
-	```
+```bash
+sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
+sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
+```
 
-	In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets.
+In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets.
 
 30. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_
 	To do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
