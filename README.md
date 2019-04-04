@@ -326,6 +326,26 @@ This section is long and will require external resources if you want to have all
 	unzip -jq file.zip *.ini
 	rm file.zip
 
+	echo "history.dat"
+	wget https://www.arcade-history.com/?page=download -q -O - | grep -o 'href="[^"]*\.zip"' | sed 's#href=\"\.\.\(.*zip\)\"#wget https://www.arcade-history.com\1 -q -O file.zip#'|sh
+	unzip -jq file.zip *.dat
+
+	echo "mameinfo.dat"
+	wget 'http://mameinfo.mameworld.info' --header="User-Agent: Firefox/70.0" -q -O - |grep -o 'href=\"[^"]*Mameinfo.*\.zip"'|sort|tail -1| sed 's#href=\"\(.*zip\)\"#wget --header=\"User-Agent: Firefox/70.0\" \1 -q -O file.zip#'|sh
+	unzip -qjp file.zip *.7z > mameinfo.7z
+	7z e '-i!mameinfo.dat' mameinfo.7z > /dev/null
+	rm file.zip mameinfo.7z
+
+	echo "gameinit.dat"
+	wget http://www.progettosnaps.net/gameinit/ -q -O - | grep 'download?tipo=gameinit' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	unzip -jq file.zip english/gameinit.dat
+	rm file.zip
+
+	echo "command.dat"
+	wget http://www.progettosnaps.net/command/ -q -O - | grep 'download?tipo=command' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	unzip -jq file.zip Longhand/command.dat
+	rm file.zip
+
 	exit
 	```
 
