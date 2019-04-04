@@ -306,42 +306,42 @@ This section is long and will require external resources if you want to have all
 	```bash
 	sudo su - kodi
 	cd /media/usb/mame/AML-assets
-	echo "retrieving catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini"
+	# catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini
 	wget http://www.progettosnaps.net/catver/ -q -O - | grep 'download?tipo=catver' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini
 	rm file.zip
 
-	echo "retrieving nplayers.ini"
+	# nplayers.ini
 	wget http://nplayers.arcadebelgium.be/ -q -O - | grep -E 'nplayers[[:digit:]]{4}\.zip' | sed "s#.*href=\"\(http://nplayers.*zip\)\">.*#wget -q '\1' -O file.zip#" | sh
 	unzip -jq file.zip nplayers.ini
 	rm file.zip
 
-	echo "bestgames.ini"
+	# bestgames.ini
 	wget http://www.progettosnaps.net/bestgames/ -q -O - | grep 'download?tipo=bestgames' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip bestgames.ini
 	rm file.zip
 
-	echo "series.ini"
+	# series.ini
 	wget http://www.progettosnaps.net/series/ -q -O - | grep 'download?tipo=series' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip series.ini
 	rm file.zip
 
-	echo "history.dat"
+	# history.dat
 	wget https://www.arcade-history.com/?page=download -q -O - | grep -o 'href="[^"]*\.zip"' | sed 's#href=\"\.\.\(.*zip\)\"#wget https://www.arcade-history.com\1 -q -O file.zip#'|sh
 	unzip -jq file.zip history.dat
 
-	echo "mameinfo.dat"
+	# mameinfo.dat
 	wget 'http://mameinfo.mameworld.info' --header="User-Agent: Firefox/70.0" -q -O - |grep -o 'href=\"[^"]*Mameinfo.*\.zip"'|sort|tail -1| sed 's#href=\"\(.*zip\)\"#wget --header=\"User-Agent: Firefox/70.0\" \1 -q -O file.zip#'|sh
 	unzip -qjp file.zip *.7z > mameinfo.7z
 	7z e '-i!mameinfo.dat' mameinfo.7z > /dev/null
 	rm file.zip mameinfo.7z
 
-	echo "gameinit.dat"
+	# gameinit.dat
 	wget http://www.progettosnaps.net/gameinit/ -q -O - | grep 'download?tipo=gameinit' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip english/gameinit.dat
 	rm file.zip
 
-	echo "command.dat"
+	# command.dat
 	wget http://www.progettosnaps.net/command/ -q -O - | grep 'download?tipo=command' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip Longhand/command.dat
 	rm file.zip
