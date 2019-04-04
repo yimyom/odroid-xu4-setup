@@ -323,7 +323,7 @@ This section is long and will require external resources if you want to have all
 
 	# series.ini
 	wget http://www.progettosnaps.net/series/ -q -O - | grep 'download?tipo=series' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
-	unzip -jq file.zip series.ini
+	unzip -jq file.zip '*.ini'
 	rm file.zip
 
 	# history.dat
