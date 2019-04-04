@@ -233,9 +233,8 @@ In the next sections, I'll show you how to:
 - install an external USB drive and have it automounted (for Kodi or Mame for example),
 - install and configure Mame and use it from Kodi
 - install and configure a joystick for Mame
-- remove software and services which are not necessary and use memory and CPU cycle for nothing
-- add firewall rules to set up the web connection for Kodi and use one of the many Android/iOS apps to control Kodi
 - create a swapfile to add extra virtual memory to your system
+- remove software and services which are not necessary and use memory and CPU cycle for nothing
 
 Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your ODroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
 
@@ -365,7 +364,7 @@ In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph
 	And Mame is ready !
 
 ## Install a joystick to play with MAME
-** TODO **
+**TODO**
 1. Install the software to support and calibrate the joystick. Arcade joysticks are easy to build or can be bought on Internet. They work very well and ideal for playing with MAME's arcade games.
 	```bash
 	sudo apt install joystick jstest-gtk
