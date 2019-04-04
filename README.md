@@ -12,6 +12,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 1. [Install Linux and Kodi on your ODroid XU4](#Install-Linux-and-Kodi-on-your-ODroid-XU4)<br/>
 2. [Install an USB external drive on your ODroid XU4](#Install-an-USB-external-drive-on-your-ODroid-XU4)<br/>
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
+4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
 
 ## Install Linux and Kodi on your ODroid XU4
 
@@ -348,31 +349,39 @@ This section is long and will require external resources if you want to have all
 
 	exit
 	```
+29.  Next we need to modify mame.ini to reflect this directories' structure:
 
+	```bash
+	sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
+	sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
+	```
 
-Next we need to modify mame.ini to reflect this directories' structure:
+	In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets.
 
-sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
-sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
+30. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_
+	To do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
+	When in Kodi, follow the paragraph mentionned above.
 
-	You can edit the file instead or re-use the same 'sed' kind of lines to keep modifying mame.ini if you add more resources. You can download various .ini files with information about the games in Mame. Read the same installation guide. Once you've put everything you want, you can install the Kodi plug-in called Advanced Mame Launcher (AML).
-	 Again, from https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called Setting up MAME assets and Software List assets to add more resources.
-	 Then follow the installation paragraph called Setting up Advanced MAME Launcher (Easy mode)
-	 And that's it. Mame is ready from Kodi
+	And Mame is ready !
 
-29. Install joystick support
-sudo apt install joystick jstest-gtk
+## Install a joystick to play with MAME
+** TODO **
+1. Install the software to support and calibrate the joystick. Arcade joysticks are easy to build or can be bought on Internet. They work very well and ideal for playing with MAME's arcade games.
+	```bash
+	sudo apt install joystick jstest-gtk
+	```
 
-30. Calibrate the joystick
-As most of Mame games will require a simple joystick with buttons, calibration will be very simple
-You can use jstest-gtk but as we already install Kodi, we will do the calibration from the command line only. With click joystick, the only calibration is to associate buttons (inside the joystick for the directions and fire/select buttons), with their respective direction or function. The calibration will be available system-wide and therefore will be used by mame
+2. Calibrate the joystick
+	As most of Mame games will require a simple joystick with buttons, calibration will be very simple.
+	You can use jstest-gtk but as we already install Kodi, we will do the calibration from the command line only. With click joystick, the only calibration is to associate buttons (inside the joystick for the directions and fire/select buttons), with their respective direction or function. The calibration will be available system-wide and therefore will be used by mame
 
+## Add virtual memory to your ODroid XU4
+In order to _extend_ the memory of the Odroid XU4, we want to add a swap file. However, it's not a good idea to use the SD-card. It's faster but swap file can be written over and over a lot of time, thus reducing the life of the card. So we will use the external USB drive, connected as described above (where we assume the drive is always connected and mounted at /media/usb):
 
-31. Create a swap file to add more virtual memory
-In order to _extend_ the memory of the Odroid XU4, we want to add a swap file. However, it's not a good idea to use the SD-card. It's faster but swap file can be written over and over a lot of time, thus reducing the life of the card. So we will use the external USB drive, connected as described above (where we assume the drive is always connected and mounted at /media/usb0):
-
-	sudo fallocate -l 2G /media/usb0/swapfile
-	sudo chmod 600 /media/usb0/swapfile
-	sudo mkswap /media/usb0/swapfile
-	sudo swapon /media/usb0/swapfile
-	sudo sed -ie "\$a/media/usb0/swapfile swap swap defaults 0 0" /etc/fstab
+```bash
+sudo fallocate -l 2G /media/usb/swapfile
+sudo chmod 600 /media/usb/swapfile
+sudo mkswap /media/usb/swapfile
+sudo swapon /media/usb/swapfile
+sudo sed -ie "\$a/media/usb/swapfile swap swap defaults 0 0" /etc/fstab
+```
