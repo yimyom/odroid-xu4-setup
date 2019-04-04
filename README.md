@@ -306,8 +306,18 @@ This section is long and will require external resources if you want to have all
 	```bash
 	sudo su - kodi
 	cd /media/usb/mame/AML-assets
-	
+	echo "retrieving catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini"
 	wget http://www.progettosnaps.net/catver/ -q -O - | grep 'download?tipo=catver' | sed "s#.*href=\"\(.*\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	unzip -jq file.zip *.ini
+	rm file.zip
+
+	echo "retrieving nplayers.ini"
+	wget http://nplayers.arcadebelgium.be/ -q -O - | grep -E 'nplayers[[:digit:]]{4}\.zip' | sed "s#.*href=\"\(http://nplayers.*zip\)\">.*#wget -q '\1' -O file.zip#" | sh
+	unzip -jq file.zip *.ini
+	rm file.zip
+
+	echo "bestgames.ini"
+	wget http://www.progettosnaps.net/bestgames/ -q -O - | grep 'download?tipo=bestgames' | sed "s#.*href=\"\(.*\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip *.ini
 	rm file.zip
 
