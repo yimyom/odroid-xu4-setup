@@ -301,13 +301,13 @@ This section is long and will require external resources if you want to have all
 	exit
 	```
 	
-	2. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186:
+	2. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. As output, you will see a series of messages saying the script is retrieving various files. No other outputs means things went well. Otherwise, you should see error messages. Again, better to copy and paste the script rather than copying manually
 
 	```bash
 	sudo su - kodi
 	cd /media/usb/mame/AML-assets
 	echo "retrieving catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini"
-	wget http://www.progettosnaps.net/catver/ -q -O - | grep 'download?tipo=catver' | sed "s#.*href=\"\(.*\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	wget http://www.progettosnaps.net/catver/ -q -O - | grep 'download?tipo=catver' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip *.ini
 	rm file.zip
 
@@ -317,7 +317,12 @@ This section is long and will require external resources if you want to have all
 	rm file.zip
 
 	echo "bestgames.ini"
-	wget http://www.progettosnaps.net/bestgames/ -q -O - | grep 'download?tipo=bestgames' | sed "s#.*href=\"\(.*\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	wget http://www.progettosnaps.net/bestgames/ -q -O - | grep 'download?tipo=bestgames' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
+	unzip -jq file.zip *.ini
+	rm file.zip
+
+	echo "series.ini"
+	wget http://www.progettosnaps.net/series/ -q -O - | grep 'download?tipo=series' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
 	unzip -jq file.zip *.ini
 	rm file.zip
 
