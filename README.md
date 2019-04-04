@@ -293,7 +293,7 @@ This section is long and will require external resources if you want to have all
 	sudo chown kodi.kodi mame
 	sudo su - kodi
 	cd /media/usb/mame
-	mkdir -p AML-ROMs AML-asset AML-CHDs AML-SL-ROMs AML-SL-CHDs AML-assets/samples/
+	mkdir -p AML-ROMs AML-CHDs AML-SL-ROMs AML-SL-CHDs AML-assets/samples/
 	cd AML-assets
 	mkdir artpreviews artwork cabinets clearlogos covers_SL cpanels fanarts fanarts_SL flyers manuals manuals_SL marquees PCBs snaps snaps_SL titles titles_SL videosnaps videosnaps_SL
 	cd
@@ -301,34 +301,34 @@ This section is long and will require external resources if you want to have all
 	exit
 	```
 	
-	2. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. As output, you will see a series of messages saying the script is retrieving various files. No other outputs means things went well. Otherwise, you should see error messages. Again, better to copy and paste the script rather than copying manually
+	2. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. Again, better to copy and paste the script rather than copying manually
 
 	```bash
 	sudo su - kodi
 	cd /media/usb/mame/AML-assets
 	echo "retrieving catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini"
 	wget http://www.progettosnaps.net/catver/ -q -O - | grep 'download?tipo=catver' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
-	unzip -jq file.zip *.ini
+	unzip -jq file.zip catlist.ini catver.ini genre.ini genre_OWS.ini mature.ini not_mature.ini
 	rm file.zip
 
 	echo "retrieving nplayers.ini"
 	wget http://nplayers.arcadebelgium.be/ -q -O - | grep -E 'nplayers[[:digit:]]{4}\.zip' | sed "s#.*href=\"\(http://nplayers.*zip\)\">.*#wget -q '\1' -O file.zip#" | sh
-	unzip -jq file.zip *.ini
+	unzip -jq file.zip nplayers.ini
 	rm file.zip
 
 	echo "bestgames.ini"
 	wget http://www.progettosnaps.net/bestgames/ -q -O - | grep 'download?tipo=bestgames' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
-	unzip -jq file.zip *.ini
+	unzip -jq file.zip bestgames.ini
 	rm file.zip
 
 	echo "series.ini"
 	wget http://www.progettosnaps.net/series/ -q -O - | grep 'download?tipo=series' | sed "s#.*href=\"\(.*\.zip\)\".*#wget -q 'http://www.progettosnaps.net\1' -O file.zip#"|sh
-	unzip -jq file.zip *.ini
+	unzip -jq file.zip series.ini
 	rm file.zip
 
 	echo "history.dat"
 	wget https://www.arcade-history.com/?page=download -q -O - | grep -o 'href="[^"]*\.zip"' | sed 's#href=\"\.\.\(.*zip\)\"#wget https://www.arcade-history.com\1 -q -O file.zip#'|sh
-	unzip -jq file.zip *.dat
+	unzip -jq file.zip history.dat
 
 	echo "mameinfo.dat"
 	wget 'http://mameinfo.mameworld.info' --header="User-Agent: Firefox/70.0" -q -O - |grep -o 'href=\"[^"]*Mameinfo.*\.zip"'|sort|tail -1| sed 's#href=\"\(.*zip\)\"#wget --header=\"User-Agent: Firefox/70.0\" \1 -q -O file.zip#'|sh
