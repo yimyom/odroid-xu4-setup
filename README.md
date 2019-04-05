@@ -368,8 +368,7 @@ You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic
 **TODO**
 Ideally, playing with MAME requires a nice joystick. Here are two examples of joystick I've built myself. It's a good exercise of woodwork, painting, designing and electronics and a fun game for the family. I've made them with planks I collected from a construction site nearby. Good for the environment to recycle things too.
 
-![joystick1](/images/joystick1.png)
-![joystick2](/images/joystick2.png)
+![joystick1](/images/joystick1.png) ![joystick2](/images/joystick2.png)
 
 1. Install the software to support and calibrate the joystick. Arcade joysticks are easy to build or can be bought on Internet. They work very well and ideal for playing with MAME's arcade games.
 	```bash
