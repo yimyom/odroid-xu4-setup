@@ -3,18 +3,18 @@
 # odroid-xu4-setup
 **VERSION 0.2**
 
-How to set up an ODroid XU4 with Kodi, Mame and an external USB drive
+How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
-I describe all the steps to install Ubuntu Linux on an ODroid XU4 and use it as a media and game center using Kodi and Mame.
+I describe all the steps to install Ubuntu Linux on an Odroid XU4 and use it as a media and game center using Kodi and Mame.
 Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine
 
 ##### Table of contents
-1. [Install Linux and Kodi on your ODroid XU4](#Install-Linux-and-Kodi-on-your-ODroid-XU4)<br/>
-2. [Install an USB external drive on your ODroid XU4](#Install-an-USB-external-drive-on-your-ODroid-XU4)<br/>
+1. [Install Linux and Kodi on your Odroid XU4](#Install-Linux-and-Kodi-on-your-Odroid-XU4)<br/>
+2. [Install an USB external drive on your Odroid XU4](#Install-an-USB-external-drive-on-your-Odroid-XU4)<br/>
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
 
-## Install Linux and Kodi on your ODroid XU4
+## Install Linux and Kodi on your Odroid XU4
 
 To install all of this, follow the steps:
 
@@ -66,7 +66,7 @@ To install all of this, follow the steps:
 
 	Then login on the desktop with the credentials as given at https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#access_credentials
 
-	At this stage you have a fully functional ODroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set
+	At this stage you have a fully functional Odroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set
 
 10. Open a terminal (search in the menu on the top-left of the screen)
 
@@ -102,7 +102,7 @@ To install all of this, follow the steps:
 	sudo apt install git cmake xorg-dev gcc g++ build-essential
 	```
 
-	Get the source code of gl4es. So, gl4es is an implementation of OpenGL using ... OpenGL ES (instead of implementing the library directly). So for systems like ODroid XU4 with a driver supporting only OpenGL ES, it is possible to use software based on OpenGL too with hardware acceleration:
+	Get the source code of gl4es. So, gl4es is an implementation of OpenGL using ... OpenGL ES (instead of implementing the library directly). So for systems like Odroid XU4 with a driver supporting only OpenGL ES, it is possible to use software based on OpenGL too with hardware acceleration:
 
 	```bash
 	git clone https://github.com/ptitSeb/gl4es.git
@@ -160,7 +160,7 @@ To install all of this, follow the steps:
 
 	and this time you should see FPS around 300.
 
-	At this stage, your ODroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
+	At this stage, your Odroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
 19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
 
@@ -221,9 +221,9 @@ To install all of this, follow the steps:
 	sudo systemctl set-default multi-user.target
 	```
 
-24.	**From now on you have a fully functional Kodi system**. If you want to reboot, your ODroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, you can follow the rest.
+24.	**From now on you have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, you can follow the rest.
 
-	If you want to stop and enjoy your ODroid XU4 now, you can reboot it:
+	If you want to stop and enjoy your Odroid XU4 now, you can reboot it:
 
 	```bash
 	sudo reboot
@@ -236,9 +236,9 @@ In the next sections, I'll show you how to:
 - create a swapfile to add extra virtual memory to your system
 - remove software and services which are not necessary and use memory and CPU cycle for nothing
 
-Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your ODroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
+Everything can be done either by connecting to your Odroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your Odroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
 
-## Install an USB external drive on your ODroid XU4
+## Install an USB external drive on your Odroid XU4
 
 
 1. Switch to a terminal or login with `ssh`.
@@ -355,7 +355,8 @@ sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
 sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
 ```
 
-In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets.
+In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
+You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
 
 30. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_
 	To do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
@@ -374,7 +375,7 @@ In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph
 	As most of Mame games will require a simple joystick with buttons, calibration will be very simple.
 	You can use jstest-gtk but as we already install Kodi, we will do the calibration from the command line only. With click joystick, the only calibration is to associate buttons (inside the joystick for the directions and fire/select buttons), with their respective direction or function. The calibration will be available system-wide and therefore will be used by mame
 
-## Add virtual memory to your ODroid XU4
+## Add virtual memory to your Odroid XU4
 In order to _extend_ the memory of the Odroid XU4, we want to add a swap file. However, it's not a good idea to use the SD-card. It's faster but swap file can be written over and over a lot of time, thus reducing the life of the card. So we will use the external USB drive, connected as described above (where we assume the drive is always connected and mounted at /media/usb):
 
 ```bash
@@ -384,3 +385,56 @@ sudo mkswap /media/usb/swapfile
 sudo swapon /media/usb/swapfile
 sudo sed -ie "\$a/media/usb/swapfile swap swap defaults 0 0" /etc/fstab
 ```
+
+## Remove unused software to save memory and CPU cycle
+
+This section is not mandatory but you can find it useful to make your Odroid XU4 lighter and more responsive. The XU4 has 2Gb of memory, which (at the time of writing) is good for a Single Board Computer (most of them have 0.5 to 1Gb, but I can see some 2 to 4 Gb finally coming on the market). So memory is a precious resource as well as CPU cycle. You don't want any slowdown of your machine while watching a movie or playing a game.
+I selected a few services which I think are not necessary for a Kodi/Mame installation. Here is the way to stop and disable them. However, we will not uninstall the software, so that you can enable them again, should your needs change in the future.
+
+1. Cups the printing server
+	As you don't really need to print from Kodi or Mame, it's safe to remove the print server (named CUPS):
+	```bash
+	sudo systemctl stop cups
+	sudo systemctl disable cups
+	```
+
+	To re-enable it
+	```bash
+	sudo systemctl enable cups
+	sudo systemctl start cups
+	```
+
+2. UPower controls the power source. It's useful in a smartphone, a laptop or an embedded system. However, in the case of a Kodi/Mame entertainment system in your living room, the only power source is the socket wall and your Odroid XU4 is supposed to be connected all the time. So you can safely remove this one too:
+	```bash
+	sudo systemctl stop upower
+	sudo systemctl disable upower
+	```
+
+3. Whoopsie is the error reporting daemon for Ubuntu, mainly used by desktop environment when something crashes. As we're only using Kodi, it's not necessary here:
+	```bash
+	sudo systemctl stop whoopsie 
+	sudo systemctl disable whoopsie 
+	```
+
+4. ModemManager is a daemon which controls mobile broadband (2G/3G/4G) devices and connections. The Odroid XU4 is connected to an ethernet (or a wifi if you have one) and does not need a _modem_ connection.
+	```bash
+	sudo systemctl stop ModemManager 
+	sudo systemctl disable ModemManager 
+	```
+5. _unattended-upgrades_ is a daemon to automatically update the system. I like when a computer works for me but in this specific case, we will avoid doing any automatic update. The reason is we want a stable entertainment system for all the family, which is available at any time. We don't want to have to do maintenance, just before launching the family movie, because an update didn't work:
+	```bash
+	sudo systemctl stop unattended-upgrades 
+	sudo systemctl disable unattended-upgrades 
+	```
+
+	If you want to upgrade your Odroid XU4, you can still do it manually by running first an update of the packages' database:
+	```bash
+	sudo apt update
+	```
+
+	Then if you like the list of packages to be updated, run an upgrade:
+	```bash
+	sudo apt upgrade
+	```
+
+	Personally, I'm a big fan of a software called `synaptic` which is a GUI for apt-based systems like Ubutun and Debian. I recommend it.
