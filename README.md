@@ -1,7 +1,7 @@
 **WARNING: This is a work in progress as of 3.4.2019. Don't use it yet, until the version number below reaches 1.0**
 
 # odroid-xu4-setup
-**VERSION 0.3**
+**VERSION 0.8**
 
 How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
@@ -13,6 +13,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 2. [Install an USB external drive on your Odroid XU4](#Install-an-USB-external-drive-on-your-Odroid-XU4)<br/>
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
+5. [Remove unused software to save memory and CPU cycle](#Remove-unused-software-to-save-memory-and-CPU-cycle)<br/>
 
 ## Install Linux and Kodi on your Odroid XU4
 
