@@ -279,7 +279,7 @@ This section is long and will require external resources if you want to have all
 	sudo sed -i 's/opengl/opengles/' /etc/mame/mame.ini
 	```
 
-2. Install Advanced Mame Launcher plugin from Kodi
+2. Install and configure Advanced Mame Launcher plugin from Kodi
 
 	We're going to follow the official guide of a Kodi plugin called [Advanced Mame Launcher (AML)](https://forum.kodi.tv/showthread.php?tid=304186) and adapt a few steps to follow our setup. Here, I assume that we have an external USB drive connected to the Odroid XU4. It will be helpful to store data for MAME.
 
@@ -301,7 +301,7 @@ This section is long and will require external resources if you want to have all
 	exit
 	```
 	
-	3. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. Again, better to copy and paste the script rather than copying manually
+	3. Then we need to fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. We use the following script to download and install everything automatically:
 
 	```bash
 	sudo su - kodi
@@ -348,21 +348,27 @@ This section is long and will require external resources if you want to have all
 
 	exit
 	```
-3.  Next we need to modify `mame.ini` to reflect this directories' structure:
+
+3. Modify `mame.ini` to reflect the new directory structure:
 
 	```bash
 	sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
 	sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
 	```
 
-	In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
-	You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
+4. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_. When it's installed, you go to the configuration and configure it with the following values:
+	- in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
+	- 
 
-4. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_.
-	In order to do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
-	When in Kodi, follow the paragraph mentionned above.
+4. Add assets
+	1.  In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
+		You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
 
-	**And Mame is ready !**
+	2. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_.
+		In order to do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
+		When in Kodi, follow the paragraph mentionned above.
+
+**And Mame is ready !**
 
 ## Install a joystick to play with MAME
 Ideally, playing with MAME requires a nice joystick. Here are two examples of joystick I've built myself. It's a good exercise of woodwork, painting, designing and electronics and a fun game for the family. I've made them with planks I collected from a construction site nearby. Good for the environment to recycle things too.
