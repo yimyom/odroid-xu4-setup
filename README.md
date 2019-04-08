@@ -233,7 +233,6 @@ In the next sections, I'll show you how to:
 - install an external USB drive and have it automounted (for Kodi or Mame for example),
 - install and configure Mame and use it from Kodi
 - install and configure a joystick for Mame
-- create a swapfile to add extra virtual memory to your system
 - remove software and services which are not necessary and use memory and CPU cycle for nothing
 
 Everything can be done either by connecting to your Odroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your Odroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
@@ -365,7 +364,6 @@ You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic
 	And Mame is ready !
 
 ## Install a joystick to play with MAME
-**TODO**
 Ideally, playing with MAME requires a nice joystick. Here are two examples of joystick I've built myself. It's a good exercise of woodwork, painting, designing and electronics and a fun game for the family. I've made them with planks I collected from a construction site nearby. Good for the environment to recycle things too.
 
 ![joystick1](/images/joystick1.png) ![joystick2](/images/joystick2.png)
@@ -377,18 +375,12 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 
 2. Calibrate the joystick
 	As most of Mame games will require a simple joystick with buttons, calibration will be very simple.
-	You can use jstest-gtk but as we already install Kodi, we will do the calibration from the command line only. With click joystick, the only calibration is to associate buttons (inside the joystick for the directions and fire/select buttons), with their respective direction or function. The calibration will be available system-wide and therefore will be used by mame
+	You can use `jstest-gtk` but as we already install Kodi, we will do the calibration from the command line only. With click joystick, the only calibration is to associate buttons (inside the joystick for the directions and fire/select buttons), with their respective direction or function. The calibration will be available system-wide and therefore will be used by mame
+	- if you can plug your joystick to your Linux machine, I recommend to use, in first instance, a small programm called `jstest-gtk`. It's a simple GUI and you can check what's the proper direction of your joystick. In my case, I use a DragonRise compatible joystick (the one on the picture), with 4 connectors for up, down, left and right. But there are a few problems which we will fix with the calibration. First of all, the left-right and up-down are inversed and then the up-down axis is upside down. So to make it short: up is right, down is left, right is down and left if up!!! I can see that on the `jstest-gtk` interface.
+	- another option (since Kodi 17) is to setup your joystick directly from Kodi. Read the tutorial here: https://kodi.wiki/view/HOW-TO:Configure_controllers
 
-## Add virtual memory to your Odroid XU4
-In order to _extend_ the memory of the Odroid XU4, we want to add a swap file. However, it's not a good idea to use the SD-card. It's faster but swap file can be written over and over a lot of time, thus reducing the life of the card. So we will use the external USB drive, connected as described above (where we assume the drive is always connected and mounted at /media/usb):
+	As there are many models of joystick, I won't cover all the possible configurations but please contribute and I'll add your solution to this guide.
 
-```bash
-sudo fallocate -l 2G /media/usb/swapfile
-sudo chmod 600 /media/usb/swapfile
-sudo mkswap /media/usb/swapfile
-sudo swapon /media/usb/swapfile
-sudo sed -ie "\$a/media/usb/swapfile swap swap defaults 0 0" /etc/fstab
-```
 
 ## Remove unused software to save memory and CPU cycle
 
