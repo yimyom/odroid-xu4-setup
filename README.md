@@ -392,7 +392,9 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 	As you don't really need to print from Kodi or Mame, it's safe to remove the print server (named CUPS):
 	```bash
 	sudo systemctl stop cups
+	sudo systemctl stop cups-browsed
 	sudo systemctl disable cups
+	sudo systemctl disable cups-browsed
 	```
 
 	To re-enable it
