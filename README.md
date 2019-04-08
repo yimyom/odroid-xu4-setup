@@ -360,7 +360,7 @@ This section is long and will require external resources if you want to have all
 	- in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
 	- 
 
-4. Add assets
+5. Add assets
 	1.  In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
 		You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
 
