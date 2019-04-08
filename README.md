@@ -279,7 +279,7 @@ This section is long and will require external resources if you want to have all
 	sudo sed -i 's/opengl/opengles/' /etc/mame/mame.ini
 	```
 
-28. Install Advanced Mame Launcher plugin from Kodi
+2. Install Advanced Mame Launcher plugin from Kodi
 
 	We're going to follow the official guide of a Kodi plugin called [Advanced Mame Launcher (AML)](https://forum.kodi.tv/showthread.php?tid=304186) and adapt a few steps to follow our setup. Here, I assume that we have an external USB drive connected to the Odroid XU4. It will be helpful to store data for MAME.
 
@@ -301,7 +301,7 @@ This section is long and will require external resources if you want to have all
 	exit
 	```
 	
-	2. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. Again, better to copy and paste the script rather than copying manually
+	3. Fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. Again, better to copy and paste the script rather than copying manually
 
 	```bash
 	sudo su - kodi
@@ -348,18 +348,18 @@ This section is long and will require external resources if you want to have all
 
 	exit
 	```
-29.  Next we need to modify `mame.ini` to reflect this directories' structure:
+3.  Next we need to modify `mame.ini` to reflect this directories' structure:
 
-```bash
-sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
-sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
-```
+	```bash
+	sudo sed -i 's#^rompath \+.*$#rompath /home/kodi/AML-ROMs/#' /etc/mame/mame.ini
+	sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
+	```
 
-In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
-You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
+	In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
+	You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
 
-30. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_
-	To do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
+4. Next step is to follow (again) the guide at https://forum.kodi.tv/showthread.php?tid=304186 in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_.
+	In order to do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
 	When in Kodi, follow the paragraph mentionned above.
 
 	And Mame is ready !
