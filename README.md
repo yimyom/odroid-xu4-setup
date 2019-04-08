@@ -1,7 +1,7 @@
 **WARNING: This is a work in progress as of 3.4.2019. Don't use it yet, until the version number below reaches 1.0**
 
 # odroid-xu4-setup
-**VERSION 0.9**
+**VERSION 0.8**
 
 How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
@@ -357,8 +357,20 @@ This section is long and will require external resources if you want to have all
 	```
 
 4. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_. When it's installed, you go to the configuration and configure it with the following values:
-	- in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
-	- 
+	1. in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
+	2. Open AML settings, in the tab Paths configure the MAME executable and the ROMs path
+	![amlconf01](/images/amlconf01.png)
+	3. Configure the paths to MAME assets
+	![amlconf02](/images/amlconf02.png)
+	![amlconf03](/images/amlconf03.png)
+	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
+	5. Select any time, open the context menu, select **Setup plugin** and execute in the following order:
+	![amlconf04](/images/amlconf04.png)
+
+		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
+		![amlconf05](/images/amlconf05.png)
+		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. You will be back to the same list when it's done
+		3. Again, **Setup plugin** and **Scan everything**. 
 
 5. Add assets
 	1.  In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
