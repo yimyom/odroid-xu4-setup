@@ -1,7 +1,7 @@
 **WARNING: This is a work in progress as of 3.4.2019. Don't use it yet, until the version number below reaches 1.0**
 
 # odroid-xu4-setup
-**VERSION 0.8**
+**VERSION 0.9**
 
 How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
@@ -362,7 +362,7 @@ This section is long and will require external resources if you want to have all
 	In order to do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
 	When in Kodi, follow the paragraph mentionned above.
 
-	And Mame is ready !
+	**And Mame is ready !**
 
 ## Install a joystick to play with MAME
 Ideally, playing with MAME requires a nice joystick. Here are two examples of joystick I've built myself. It's a good exercise of woodwork, painting, designing and electronics and a fun game for the family. I've made them with planks I collected from a construction site nearby. Good for the environment to recycle things too.
