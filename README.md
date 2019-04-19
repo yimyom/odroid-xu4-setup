@@ -481,16 +481,16 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 	Personally, I'm a big fan of a software called `synaptic` which is a GUI for apt-based systems like Ubutun and Debian. I recommend it.
 
 ---
-### Support my work by making a small donation.
+### Support my work by making a small donation
 <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
 
-On Paypal:
-<a href="https://paypal.me/DavidBellot?locale.x=en_GB">
-	<img alt="Donate with PayPal button" style="border-width:0" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif"  />
-</a>
+- with **Paypal**:
+	<a href="https://paypal.me/DavidBellot?locale.x=en_GB">
+		<img alt="Donate with PayPal button" style="border-width:0" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif"  />	
+	</a>
 
-With Bitcoins at the address: **18kuqN4vsy4ALNrg39dCkQnEoPPEbqagsH** or by using the following QR code:
-![BTC donations](/images/btc.png)
+- with Bitcoins at the address: **18kuqN4vsy4ALNrg39dCkQnEoPPEbqagsH** or by using the following QR code:
+	![BTC donations](/images/btc.png)
 
 ---
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">odroid-xu4-setup</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="https://github.com/yimyom/odroid-xu4-setup" property="cc:attributionName" rel="cc:attributionURL">David Bellot</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="https://github.com/yimyom/odroid-xu4-setup" rel="dct:source">https://github.com/yimyom/odroid-xu4-setup</a>.
