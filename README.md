@@ -403,7 +403,9 @@ This section is long and will require external resources if you want to have all
 
 	5. Go back to Kodi and you can do **Setup plugin** and **Scan everything again** if you added asserts and ROMs.
 <br/>
+
 **And Mame is ready !**
+
 <br/>
 
 ## Install a joystick to play with MAME
