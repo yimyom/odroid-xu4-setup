@@ -481,17 +481,14 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 
 ---
 ### Support my work by making a small donation.
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_donations" />
-<input type="hidden" name="business" value="YYWS3G7ZMR9HL" />
-<input type="hidden" name="item_name" value="Support my work" />
-<input type="hidden" name="currency_code" value="GBP" />
-<input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
 <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
-</form>
 
-You can also send me Bitcoins at 18kuqN4vsy4ALNrg39dCkQnEoPPEbqagsH
-or by using the following QR code:
+On Paypal:
+<a href="https://paypal.me/DavidBellot?locale.x=en_GB">
+	<img alt="Donate with PayPal button" style="border-width:0" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif"  />
+</a>
+
+With Bitcoins at the address: **18kuqN4vsy4ALNrg39dCkQnEoPPEbqagsH** or by using the following QR code:
 ![BTC donations](/images/btc.png)
 
 ---
