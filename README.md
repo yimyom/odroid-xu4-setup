@@ -402,16 +402,9 @@ This section is long and will require external resources if you want to have all
 	```
 
 	5. Go back to Kodi and you can do **Setup plugin** and **Scan everything again** if you added asserts and ROMs.
-
 <br/>
 <br/>
-<div style="text-align:center">
-<font size="+1">
-<bold>And MAME is ready!</bold>
-</font>
-</div>
-<br/>
-<br/>
+**And Mame is ready !**
 
 ## Install a joystick to play with MAME
 Ideally, playing with MAME requires a nice joystick. Here are two examples of joystick I've built myself. It's a good exercise of woodwork, painting, designing and electronics and a fun game for the family. I've made them with planks I collected from a construction site nearby. Good for the environment to recycle things too.
