@@ -88,7 +88,7 @@ To install all of this, follow the steps:
 14. The good news is that kodi installed by default. Kodi is installed by default. But if by any chance it is not (?), you can install it with:
 
 	```bash
-	sudo apt install kodi kodi-bin kodi-data
+	sudo apt install kodi kodi-bin kodi-data libcec4 python-libcec
 	```
 
 15. The Mali graphical driver is installed by default and works well. Go in a terminal and run
@@ -158,9 +158,7 @@ To install all of this, follow the steps:
 	```bash
 	glmark2
 	```
-
 	and this time you should see FPS around 300.
-
 	At this stage, your Odroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
 19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
@@ -279,12 +277,26 @@ This section is long and will require external resources if you want to have all
 	sudo apt install mame mame-data mame-doc mame-extra mame-tools
 	```
 
-	Change the mame rendingir driver to OpenGL ES.
+	Change the mame rendering driver to OpenGL ES.
 	For some reasons, the OpenGL driver (through `gl4es`) didn't work. If someone has a better solution, please contact me and share.
 
 	```bash
 	sudo sed -i 's/opengl/opengles/' /etc/mame/mame.ini
 	```
+
+	Then we need to remove the `gl4es` startup message to make MAME happy. Long story short: a Kodi plugin will extract the games' database `MAME.xml` to the standard output by running `mame`. When `mame` starts, `gl4es` is initialized and displays a nice message, like the one above. But the Kodi plugins capture the standard output which is supposed to be an XML file, except that we have this welcome message on top of it from `gl4es`. So when Kodi tries to read the XML file (in fact a Python library tries too), it fails:
+	```bash
+	sudo cat << EOF > /usr/local/bin/mame
+	#!/bin/sh
+	export LIBGL_SILENTSTUB=1
+	export LIBGL_NOBANNER=1
+
+	/usr/games/mame "@"
+	EOF
+	sudo chmod ugo+x /usr/local/bin/mame
+	```
+
+	When configuring the AML add-on in Kodi, we will use this new mame command we've just created
 
 2. Install and configure Advanced Mame Launcher plugin from Kodi
 
@@ -363,23 +375,7 @@ This section is long and will require external resources if you want to have all
 	sudo sed -i 's#^samplepath \+.*$#samplepath /home/kodi/AML-assets/samples/#' /etc/mame/mame.ini
 	```
 
-4. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_. When it's installed, you go to the configuration and configure it with the following values:
-	1. in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
-	2. Open AML settings, in the tab Paths configure the MAME executable and the ROMs path
-	![amlconf01](/images/amlconf01.png)
-	3. Configure the paths to MAME assets
-	![amlconf02](/images/amlconf02.png)
-	![amlconf03](/images/amlconf03.png)
-	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
-	5. Select any time, open the context menu, select **Setup plugin** and execute in the following order:
-	![amlconf04](/images/amlconf04.png)
-
-		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
-		![amlconf05](/images/amlconf05.png)
-		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. You will be back to the same list when it's done
-		3. Again, **Setup plugin** and **Scan everything**. 
-
-5. Add assets
+4. Add assets
 	1.  In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
 		You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
 
@@ -401,7 +397,22 @@ This section is long and will require external resources if you want to have all
 	sudo chown -R kodi.kodi /media/usb/mame
 	```
 
-	5. Go back to Kodi and you can do **Setup plugin** and **Scan everything again** if you added asserts and ROMs.
+5. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_. When it's installed, you go to the configuration and configure it with the following values:
+	1. in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
+	2. Open AML settings, in the tab Paths configure the MAME executable and the ROMs path
+	![amlconf01](/images/amlconf01.png)
+	3. Configure the paths to MAME assets
+	![amlconf02](/images/amlconf02.png)
+	![amlconf03](/images/amlconf03.png)
+	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
+	5. Select any time, open the context menu, select **Setup plugin** and execute in the following order:
+	![amlconf04](/images/amlconf04.png)
+
+		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
+		![amlconf05](/images/amlconf05.png)
+		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. You will be back to the same list when it's done
+		3. Again, **Setup plugin** and **Scan everything**. Note that you might want to do this step after installing all the games. See the next section _Add assets_.
+
 <br/>
 
 **And Mame is ready!**
@@ -445,7 +456,9 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 	sudo systemctl start cups
 	```
 
-2. UPower controls the power source. It's useful in a smartphone, a laptop or an embedded system. However, in the case of a Kodi/Mame entertainment system in your living room, the only power source is the socket wall and your Odroid XU4 is supposed to be connected all the time. So you can safely remove this one too:
+2. 
+
+UPower controls the power source. It's useful in a smartphone, a laptop or an embedded system. However, in the case of a Kodi/Mame entertainment system in your living room, the only power source is the socket wall and your Odroid XU4 is supposed to be connected all the time. So you can safely remove this one too:
 	```bash
 	sudo systemctl stop upower
 	sudo systemctl disable upower
