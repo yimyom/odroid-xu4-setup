@@ -401,7 +401,7 @@ This section is long and will require external resources if you want to have all
 	sudo chown -R kodi.kodi /media/usb/mame
 	```
 
-	5. Go back to Kodi TODO
+	5. Go back to Kodi
 
 **And Mame is ready !**
 
