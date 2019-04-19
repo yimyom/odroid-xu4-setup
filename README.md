@@ -411,6 +411,7 @@ This section is long and will require external resources if you want to have all
 		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
 		![amlconf05](/images/amlconf05.png)
 		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. You will be back to the same list when it's done
+		![amlconf06](/images/amlconf06.png)
 		3. Again, **Setup plugin** and **Scan everything**. Note that you might want to do this step after installing all the games. See the next section _Add assets_.
 
 <br/>
