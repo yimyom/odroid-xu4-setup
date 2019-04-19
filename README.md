@@ -489,7 +489,7 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 		<img alt="Donate with PayPal button" style="border-width:0" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_donateCC_LG.gif"  />	
 	</a>
 
-- with Bitcoins at the address: **18kuqN4vsy4ALNrg39dCkQnEoPPEbqagsH** or by using the following QR code:
+- with Bitcoin at the address: **18kuqN4vsy4ALNrg39dCkQnEoPPEbqagsH** or by using the following QR code:
 	![BTC donations](/images/btc.png)
 
 ---
