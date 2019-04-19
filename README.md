@@ -13,7 +13,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 2. [Install an USB external drive on your Odroid XU4](#Install-an-USB-external-drive-on-your-Odroid-XU4)<br/>
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
-5. [Remove unused software to save memory and CPU cycle](#Remove-unused-software-to-save-memory-and-CPU-cycle)<br/>
+5. [Remove unused software to save memory and CPU cycles](#Remove-unused-software-to-save-memory-and-CPU-cycles)<br/>
 
 ## Install Linux and Kodi on your Odroid XU4
 
@@ -425,7 +425,7 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 	As there are many models of joystick, I won't cover all the possible configurations but please contribute and I'll add your solution to this guide.
 
 
-## Remove unused software to save memory and CPU cycle
+## Remove unused software to save memory and CPU cycles
 
 This section is not mandatory but you can find it useful to make your Odroid XU4 lighter and more responsive. The XU4 has 2Gb of memory, which (at the time of writing) is good for a Single Board Computer (most of them have 0.5 to 1Gb, but I can see some 2 to 4 Gb finally coming on the market). So memory is a precious resource as well as CPU cycle. You don't want any slowdown of your machine while watching a movie or playing a game.
 I selected a few services which I think are not necessary for a Kodi/Mame installation. Here is the way to stop and disable them. However, we will not uninstall the software, so that you can enable them again, should your needs change in the future.
