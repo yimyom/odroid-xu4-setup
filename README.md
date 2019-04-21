@@ -158,7 +158,7 @@ To install all of this, follow the steps:
 	```bash
 	glmark2
 	```
-	and this time you should see FPS around 300.
+	and this time you should see FPS around 300 to 600. 
 	At this stage, your Odroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
 19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
@@ -179,7 +179,7 @@ To install all of this, follow the steps:
 20. Assign some privileges to this user:
 
 	```bash
-	usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse kodi
+	sudo usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse kodi
 	```
 
 21. Add options to allow Kodi to start its own X server:
@@ -192,7 +192,7 @@ To install all of this, follow the steps:
 22. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
 
 	```bash
-	sudo cat > /etc/systemd/system/kodi.service <<EOF
+	cat << EOF | sudo tee /etc/systemd/system/kodi.service
 	[Unit]
 	Description = Kodi Media Center
 
@@ -212,6 +212,8 @@ To install all of this, follow the steps:
 	WantedBy = multi-user.target
 	EOF
 	```
+
+	A quick note on the first line, the `sudo` command works on `tee` to write with super-user rights to the file, because if I would do it on `cat` and follow the same pattern as the other commands in this document, the redirection to the file would not work. Indeed, the redirection is done by the shell (belonging to the user `odroid`) and not by the command. So `sudo cat` would not work.
 
 23. Enable Kodi at boot time:
 
@@ -254,7 +256,7 @@ Everything can be done either by connecting to your Odroid XU4 with `ssh` or on 
 	```bash
 	git clone https://github.com/rbrito/usbmount.git
 	cd usbmount
-	sudo apt-get update && sudo apt-get install -y debhelper build-essential
+	sudo apt-get update && sudo apt-get install -y debhelper build-essential fakeroot
 	dpkg-buildpackage -us -uc -b
 	cd ..
 	sudo dpkg -i usbmount_0.0.24_all.deb
@@ -263,9 +265,9 @@ Everything can be done either by connecting to your Odroid XU4 with `ssh` or on 
 3. By default, usbmount will mount the external USB drive with the `sync` option. `sync` means that all write access to the disk will be immediately flushed to the disk. And it can dramatically slow down all the disk operations. 
 
 	```bash
-	sed -ie 's/^MOUNTOPTIONS=.*/MOUNTOPTIONS="noexec,nodev,noatime,nodiratime"/' /etc/usbmount/usbmount.conf
+	sudo sed -ie 's/^MOUNTOPTIONS=.*/MOUNTOPTIONS="noexec,nodev,noatime,nodiratime"/' /etc/usbmount/usbmount.conf
 	```
-	i assume it is safe to use the `async` option here because you're not supposed to unplug this disk at any time. When I've done that, the write speed of my external hard drive has been multiplied by 10!
+	I assume it is safe to use the `async` option here because you're not supposed to unplug this disk at any time. When I've done that, the write speed of my external hard drive has been multiplied by 10!
 
 ## Install MAME to play arcade games from Kodi
 
@@ -274,7 +276,7 @@ This section is long and will require external resources if you want to have all
 1. Install MAME
 
 	```bash
-	sudo apt install mame mame-data mame-doc mame-extra mame-tools
+	sudo apt install mame mame-data mame-doc mame-extra mame-tools libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-net-2.0-0 
 	```
 
 	Change the mame rendering driver to OpenGL ES.
@@ -286,7 +288,7 @@ This section is long and will require external resources if you want to have all
 
 	Then we need to remove the `gl4es` startup message to make MAME happy. Long story short: a Kodi plugin will extract the games' database `MAME.xml` to the standard output by running `mame`. When `mame` starts, `gl4es` is initialized and displays a nice message, like the one above. But the Kodi plugins capture the standard output which is supposed to be an XML file, except that we have this welcome message on top of it from `gl4es`. So when Kodi tries to read the XML file (in fact a Python library tries too), it fails:
 	```bash
-	sudo cat << EOF > /usr/local/bin/mame
+	cat << EOF | sudo tee /usr/local/bin/mame
 	#!/bin/sh
 	export LIBGL_SILENTSTUB=1
 	export LIBGL_NOBANNER=1
@@ -410,9 +412,9 @@ This section is long and will require external resources if you want to have all
 
 		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
 		![amlconf05](/images/amlconf05.png)
-		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. You will be back to the same list when it's done
+		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. Then you will see a new progress bar saying _Building main MAME database_. It will take several minutes to complete. Then another progress bar saying _Saving databases_. This one too will be long.
 		![amlconf06](/images/amlconf06.png)
-		3. Again, **Setup plugin** and **Scan everything**. Note that you might want to do this step after installing all the games. See the next section _Add assets_.
+		3. Again, **Setup plugin** and **Scan everything**. This step will take a few minutes too and display many progress bars again.
 
 <br/>
 
@@ -436,6 +438,57 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 
 	As there are many models of joystick, I won't cover all the possible configurations but please contribute and I'll add your solution to this guide.
 
+	- For my own case, this is what I did, hoping it can be useful: there is a config file for `mame` which can used to change the configutation of a _click_ joystick like mine. The file is located in `/home/kodi/.mame/cfg/default.cfg`. The format is XML. You can do the following to create this file. However, you will have to edit it manually to adapt it to your own joystick:
+	```bash
+	sudo mkdir -p /home/kodi/.mame/cfg
+	sudo cat << EOF > /home/kodi/
+
+	<?xml version="1.0"?>
+	<mameconfig version="10">
+	    <system name="default">
+	        <input>
+	            <port type="P1_JOYSTICK_UP">        <newseq type="standard">JOYCODE_1_XAXIS_RIGHT_SWITCH    </newseq></port>
+	            <port type="P1_JOYSTICK_DOWN">      <newseq type="standard">JOYCODE_1_XAXIS_LEFT_SWITCH    </newseq></port>
+	            <porttype="P1_JOYSTICK_LEFT">       <newseq type="standard">JOYCODE_1_YAXIS_UP_SWITCH    </newseq></port>
+	            <porttype="P1_JOYSTICK_RIGHT">      <newseq type="standard">JOYCODE_1_YAXIS_DOWN_SWITCH    </newseq></port>
+	            <porttype="P1_BUTTON1">             <newseq type="standard">JOYCODE_1_BUTTON1        </newseq></port>
+	            <porttype="P1_BUTTON2">             <newseq type="standard">JOYCODE_1_BUTTON3        </newseq></port>
+	            <porttype="P1_BUTTON3">             <newseq type="standard">JOYCODE_1_BUTTON5        </newseq></port>
+	            <porttype="P1_BUTTON5">             <newseq type="standard">JOYCODE_1_BUTTON2        </newseq></port>
+	            <porttype="P1_BUTTON6">             <newseq type="standard">JOYCODE_1_BUTTON4        </newseq></port>
+	            <porttype="P1_BUTTON7">             <newseq type="standard">JOYCODE_1_BUTTON6        </newseq></port>
+	            <porttype="P1_START">               <newseq type="standard">JOYCODE_1_BUTTON9        </newseq></port>
+	            <porttype="P1_SELECT">              <newseq type="standard">JOYCODE_1_BUTTON10        </newseq></port>
+	            <porttype="COIN1">                  <newseq type="standard">JOYCODE_1_BUTTON8        </newseq></port>
+	            <porttype="POWER_OFF">              <newseq type="standard">JOYCODE_1_BUTTON7        </newseq></port>
+	
+	            <port    type="P2_JOYSTICK_UP">     <newseq type="standard">JOYCODE_2_XAXIS_RIGHT_SWITCH    </newseq></port>
+	            <port    type="P2_JOYSTICK_DOWN">   <newseq type="standard">JOYCODE_2_XAXIS_LEFT_SWITCH    </newseq></port>
+	            <port    type="P2_JOYSTICK_LEFT">   <newseq type="standard">JOYCODE_2_YAXIS_UP_SWITCH    </newseq></port>
+	            <port    type="P2_JOYSTICK_RIGHT">  <newseq type="standard">JOYCODE_2_YAXIS_DOWN_SWITCH    </newseq></port>
+	            <port    type="P2_BUTTON1">         <newseq type="standard">JOYCODE_2_BUTTON1        </newseq></port>
+	            <port    type="P2_BUTTON2">         <newseq type="standard">JOYCODE_2_BUTTON3        </newseq></port>
+	            <port    type="P2_BUTTON3">         <newseq type="standard">JOYCODE_2_BUTTON5        </newseq></port>
+	            <port    type="P2_BUTTON5">         <newseq type="standard">JOYCODE_2_BUTTON2        </newseq></port>
+	            <port    type="P2_BUTTON6">         <newseq type="standard">JOYCODE_2_BUTTON4        </newseq></port>
+	            <port    type="P2_BUTTON7">         <newseq type="standard">JOYCODE_2_BUTTON6        </newseq></port>
+	            <port    type="P2_START">           <newseq type="standard">JOYCODE_2_BUTTON9        </newseq></port>
+	            <port    type="P2_SELECT">          <newseq type="standard">JOYCODE_2_BUTTON10        </newseq></port>
+	            <port    type="COIN2">              <newseq type="standard">JOYCODE_2_BUTTON8        </newseq></port>
+	            <port    type="POWER_OFF">          <newseq type="standard">JOYCODE_2_BUTTON7        </newseq></port>
+	        </input>
+	    </system>
+	</mameconfig>
+	EOF
+	TODO
+
+	sudo chown -R kodi.kodi /home/kodi/.mame
+	sudo chmod ugo-w /home/kodi/.mame/cfg/
+	```
+
+	Then you can edit this file to adjust it to you own joystick. My joystick (which I built myself, hence the _little_ problem :-) ) has a 90 degrees misconfiguration. So UP is right, RIGHT is down, etc... In the XML file, you have two parts. one for the _Player 1_ joystick and another part for the _Player 2_. Each line with `type="P1_JOYSTICK_UP"` (etc...) is the direction as understood by `mame`. Then, the real configuration comes after as `JOYCODE_1_XAXIS_RIGHT_SWITCH`. Therefore, this line means that when my joystick sends a code for `RIGHT`, `mame` will interpret it as `UP`. Below this, I configured the buttons 1 to 8 and the `START` and `SELECT` buttons. Then I do the same for the Player's 2 joystick.
+
+	TODO
 
 ## Remove unused software to save memory and CPU cycles
 
