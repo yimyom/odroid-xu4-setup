@@ -505,9 +505,7 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 	sudo systemctl start cups
 	```
 
-2. 
-
-UPower controls the power source. It's useful in a smartphone, a laptop or an embedded system. However, in the case of a Kodi/Mame entertainment system in your living room, the only power source is the socket wall and your Odroid XU4 is supposed to be connected all the time. So you can safely remove this one too:
+2.  UPower controls the power source. It's useful in a smartphone, a laptop or an embedded system. However, in the case of a Kodi/Mame entertainment system in your living room, the only power source is the socket wall and your Odroid XU4 is supposed to be connected all the time. So you can safely remove this one too:
 	```bash
 	sudo systemctl stop upower
 	sudo systemctl disable upower
