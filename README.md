@@ -279,11 +279,10 @@ This section is long and will require external resources if you want to have all
 	sudo apt install mame mame-data mame-doc mame-extra mame-tools libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-net-2.0-0 
 	```
 
-	Change the mame rendering driver to OpenGL ES.
-	For some reasons, the OpenGL driver (through `gl4es`) didn't work. If someone has a better solution, please contact me and share.
+	Change the mame rendering driver to OpenGL ES version 2 (this is one of the supported driver in this version of mame).
 
 	```bash
-	sudo sed -i 's/opengl/opengles/' /etc/mame/mame.ini
+	sudo sed -i 's/opengl/opengles2/' /etc/mame/mame.ini
 	```
 
 	Then we need to remove the `gl4es` startup message to make MAME happy. Long story short: a Kodi plugin will extract the games' database `MAME.xml` to the standard output by running `mame`. When `mame` starts, `gl4es` is initialized and displays a nice message, like the one above. But the Kodi plugins capture the standard output which is supposed to be an XML file, except that we have this welcome message on top of it from `gl4es`. So when Kodi tries to read the XML file (in fact a Python library tries too), it fails:
@@ -293,7 +292,7 @@ This section is long and will require external resources if you want to have all
 	export LIBGL_SILENTSTUB=1
 	export LIBGL_NOBANNER=1
 
-	/usr/games/mame "@"
+	/usr/games/mame "$@"
 	EOF
 	sudo chmod ugo+x /usr/local/bin/mame
 	```
