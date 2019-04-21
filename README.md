@@ -179,7 +179,7 @@ To install all of this, follow the steps:
 20. Assign some privileges to this user:
 
 	```bash
-	sudo usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse kodi
+	sudo usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse,pulse-access,games kodi
 	```
 
 21. Add options to allow Kodi to start its own X server:
@@ -282,7 +282,8 @@ This section is long and will require external resources if you want to have all
 	Change the mame rendering driver to OpenGL ES version 2 (this is one of the supported driver in this version of mame).
 
 	```bash
-	sudo sed -i 's/opengl/opengles2/' /etc/mame/mame.ini
+	sudo sed -i 's/opengl/auto/' /etc/mame/mame.ini
+	echo "render opengles2" | sudo tee -a /etc/mame/mame.ini
 	```
 
 	Then we need to remove the `gl4es` startup message to make MAME happy. Long story short: a Kodi plugin will extract the games' database `MAME.xml` to the standard output by running `mame`. When `mame` starts, `gl4es` is initialized and displays a nice message, like the one above. But the Kodi plugins capture the standard output which is supposed to be an XML file, except that we have this welcome message on top of it from `gl4es`. So when Kodi tries to read the XML file (in fact a Python library tries too), it fails:
