@@ -389,7 +389,7 @@ This section is long and will require external resources if you want to have all
 		- but you will find `.zip` files too. You can simply unzip them and move them to the final directory as above. Some directories don't have the same name, so keep the names we created above. In this case, transfer the content of the directory instead of the directory itself.
 		- if you find packages with `bios-devices` in their name you don't need them if you already downloaded the very big packages with `ROMs` in their name. They are just subset for different situation. You can read more about all those packages [on this page](http://forum.pleasuredome.org.uk/index.php?showtopic=34705). These packages are made when you want a minimal version of the ROMs for example if you're running short on disk.
 		- There are packages called Rollbacks Roms too ([information here](http://forum.pleasuredome.org.uk/index.php?showtopic=30284#entry260352)). You only need them if you have a ROM manager for Mame which can deal with multiple version. You won't need them in this tutorial.
-		- There are the Software List ROMs and CHDs. Obviously, their content will go into the `/media/usb/mame/AML-SL-ROMS` and /media/usb/mame/AML-SL-CHDs` directories we've created before. `SL` stands for `Software List` of course.
+		- There are the Software List ROMs and CHDs. Obviously, their content will go into the `/media/usb/mame/AML-SL-ROMS` and `/media/usb/mame/AML-SL-CHDs` directories we've created before. `SL` stands for `Software List` of course.
 
 
 	4. Finally, you might have messed up a bit with users' permission when downloading and moving files. So you want to make things well by assignign the `kodi` user to the `mame` directory:
