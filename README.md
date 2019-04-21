@@ -306,8 +306,6 @@ This section is long and will require external resources if you want to have all
 
 	1. Assuming you're on a text terminal (see above on how to switch to a text terminal from Kodi), the first step is to create directories to store MAME data. The external USB drive is mounted to `/media/usb0` and by default to `/media/usb` too. We will assume it's the case from now on.
 
-	2. We now create the directory structure as required by AML for MAME:
-
 	```bash
 	cd /media/usb
 	sudo mkdir mame
@@ -322,7 +320,7 @@ This section is long and will require external resources if you want to have all
 	exit
 	```
 	
-	3. Then we need to fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. We use the following script to download and install everything automatically:
+	2. Then we need to fill in the directories with the latest data for Mame as described in https://forum.kodi.tv/showthread.php?tid=304186. We use the following script to download and install everything automatically:
 
 	```bash
 	sudo su - kodi
@@ -441,8 +439,7 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 	- For my own case, this is what I did, hoping it can be useful: there is a config file for `mame` which can used to change the configutation of a _click_ joystick like mine. The file is located in `/home/kodi/.mame/cfg/default.cfg`. The format is XML. You can do the following to create this file. However, you will have to edit it manually to adapt it to your own joystick:
 	```bash
 	sudo mkdir -p /home/kodi/.mame/cfg
-	sudo cat << EOF > /home/kodi/
-
+	cat << EOF | sudo tee /home/kodi/.mame/cfg/default.cfg
 	<?xml version="1.0"?>
 	<mameconfig version="10">
 	    <system name="default">
@@ -480,8 +477,6 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 	    </system>
 	</mameconfig>
 	EOF
-	TODO
-
 	sudo chown -R kodi.kodi /home/kodi/.mame
 	sudo chmod ugo-w /home/kodi/.mame/cfg/
 	```
