@@ -14,6 +14,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
 5. [Remove unused software to save memory and CPU cycles](#Remove-unused-software-to-save-memory-and-CPU-cycles)<br/>
+6. [Set the clock to your own time zone](Set the clock to your own time zone)
 
 ## Install Linux and Kodi on your Odroid XU4
 
@@ -69,9 +70,9 @@ To install all of this, follow the steps:
 
 	At this stage you have a fully functional Odroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set
 
-10. Open a terminal (search in the menu on the top-left of the screen)
+9. Open a terminal (search in the menu on the top-left of the screen)
 
-11. Update the packages
+10. Update the packages
 
 	```bash
 	sudo apt update
@@ -85,17 +86,17 @@ To install all of this, follow the steps:
 
 	During the update, if you get a question about /etc/apt-fast.conf, answer Y (for Yes)
 
-14. The good news is that kodi installed by default. Kodi is installed by default. But if by any chance it is not (?), you can install it with:
+11. The good news is that kodi installed by default. Kodi is installed by default. But if by any chance it is not (?), you can install it with:
 
 	```bash
 	sudo apt install kodi kodi-bin kodi-data libcec4 python-libcec
 	```
 
-15. The Mali graphical driver is installed by default and works well. Go in a terminal and run
+12. The Mali graphical driver is installed by default and works well. Go in a terminal and run
 	`glmark2-es2` and you should see a demo (a horse). FPS should be around 300 frames/second
 	run `glmark2` and you should see the same demo. FPS should be around 30 frames/second. Terrible! The reason is because the Mali driver only supports OpenGL ES (Embedded System) and not plain OpenGL. The solution is to use a library called [gl4es](https://github.com/ptitSeb/gl4es), which you can find on Github.
 
-16. Install gl4es
+13. Install gl4es
 
 	In a terminal, install the following development tools:
 
@@ -161,7 +162,7 @@ To install all of this, follow the steps:
 	and this time you should see FPS around 300 to 600. 
 	At this stage, your Odroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
 
-19. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
+14. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
 
 	```bash
 	sudo adduser --disabled-password --gecos "" kodi
@@ -176,20 +177,20 @@ To install all of this, follow the steps:
 	Copying files from `/etc/skel' ...
 	```
 
-20. Assign some privileges to this user:
+15. Assign some privileges to this user:
 
 	```bash
 	sudo usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse,pulse-access,games kodi
 	```
 
-21. Add options to allow Kodi to start its own X server:
+16. Add options to allow Kodi to start its own X server:
 
 	```bash
 	sudo sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
 	sudo sed -ie "\$aneeds_root_rights = yes" /etc/X11/Xwrapper.config
 	```
 
-22. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
+17. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
 
 	```bash
 	cat << EOF | sudo tee /etc/systemd/system/kodi.service
@@ -215,12 +216,18 @@ To install all of this, follow the steps:
 
 	A quick note on the first line, the `sudo` command works on `tee` to write with super-user rights to the file, because if I would do it on `cat` and follow the same pattern as the other commands in this document, the redirection to the file would not work. Indeed, the redirection is done by the shell (belonging to the user `odroid`) and not by the command. So `sudo cat` would not work.
 
-23. Enable Kodi at boot time:
+18. Enable Kodi at boot time:
 
 	```bash
 	sudo systemctl enable kodi
 	sudo systemctl set-default multi-user.target
 	```
+
+19. On the [Hardkernel Wiki](https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#known_issues_and_tips), it is said that a recent Canonical's EGL package blocked access to the Mali GPU. It is sooo true. The fix is as they said:
+	```bash
+	sudo apt install mali-x11 --reinstall
+	```
+	At the time of publication (end of April 2019), it fixes the loss of Mali GPU access bug. So it is highly recommended to apply this fix. In fact, if you update the system as I said before, you will have the bug and you will fix it by reinstall `mali-x11` as above.
 
 24.	**From now on you have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, you can follow the rest.
 
@@ -279,11 +286,34 @@ This section is long and will require external resources if you want to have all
 	sudo apt install mame mame-data mame-doc mame-extra mame-tools libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-net-2.0-0 
 	```
 
-	Change the mame rendering driver to OpenGL ES version 2 (this is one of the supported driver in this version of mame).
-
+	Create a new config file with the correct paths, using OpenGL ES 2, the ALSA audio driver, tuning the speed and using all the cores:
 	```bash
-	sudo sed -i 's/opengl/auto/' /etc/mame/mame.ini
-	echo "render opengles2" | sudo tee -a /etc/mame/mame.ini
+	cat << EOF | sudo tee /etc/mame/mame.ini
+    inipath                  $HOME/.mame;/etc/mame
+	rompath                 /home/kodi/AML-ROMs/
+	samplepath              /home/kodi/AML-assets/samples/
+	ctrlrpath               /home/kodi/AML-assets/ctrlr
+	hashpath                /usr/share/games/mame/hash
+
+	cfg_directory           $HOME/.mame/cfg
+	nvram_directory         $HOME/.mame/nvram
+	memcard_directory       $HOME/.mame/memcard
+	input_directory         $HOME/.mame/inp
+	state_directory         $HOME/.mame/sta
+	snapshot_directory      $HOME/.mame/snap
+	diff_directory          $HOME/.mame/diff
+	comment_directory       $HOME/.mame/comments
+
+	video                   auto
+	render                  opengles2
+	audiodriver             alsa
+	samplerate              32000
+	numprocessors           8
+	mouse                   1
+	uimodekey               INSERT
+	autoframeskip           1
+	EOF
+	sudo chmod ugo+r /etc/mame/mame.ini
 	```
 
 	Then we need to remove the `gl4es` startup message to make MAME happy. Long story short: a Kodi plugin will extract the games' database `MAME.xml` to the standard output by running `mame`. When `mame` starts, `gl4es` is initialized and displays a nice message, like the one above. But the Kodi plugins capture the standard output which is supposed to be an XML file, except that we have this welcome message on top of it from `gl4es`. So when Kodi tries to read the XML file (in fact a Python library tries too), it fails:
@@ -403,7 +433,7 @@ This section is long and will require external resources if you want to have all
 	![amlconf02](/images/amlconf02.png)
 	![amlconf03](/images/amlconf03.png)
 	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
-	5. Select any time, open the context menu, select **Setup plugin** and execute in the following order:
+	5. Select any row, open the context menu with a right-click, select **Setup plugin** and execute in the following order:
 	![amlconf04](/images/amlconf04.png)
 
 		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
@@ -434,54 +464,111 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 
 	As there are many models of joystick, I won't cover all the possible configurations but please contribute and I'll add your solution to this guide.
 
-	- For my own case, this is what I did, hoping it can be useful: there is a config file for `mame` which can used to change the configutation of a _click_ joystick like mine. The file is located in `/home/kodi/.mame/cfg/default.cfg`. The format is XML. You can do the following to create this file. However, you will have to edit it manually to adapt it to your own joystick:
-	```bash
-	sudo mkdir -p /home/kodi/.mame/cfg
-	cat << EOF | sudo tee /home/kodi/.mame/cfg/default.cfg
+	- If you want to play with the joystick configuration and assign various command to each button or change the directions, you need to provide a configuration file. Let's call it `myjoyremap.cfg`. In my case, I use the following file, but yours might differ a lot depending on what you want to achieve and your joystick's model.
+	```xml
 	<?xml version="1.0"?>
 	<mameconfig version="10">
 	    <system name="default">
-	        <input>
-	            <port type="P1_JOYSTICK_UP">        <newseq type="standard">JOYCODE_1_XAXIS_RIGHT_SWITCH    </newseq></port>
-	            <port type="P1_JOYSTICK_DOWN">      <newseq type="standard">JOYCODE_1_XAXIS_LEFT_SWITCH    </newseq></port>
-	            <porttype="P1_JOYSTICK_LEFT">       <newseq type="standard">JOYCODE_1_YAXIS_UP_SWITCH    </newseq></port>
-	            <porttype="P1_JOYSTICK_RIGHT">      <newseq type="standard">JOYCODE_1_YAXIS_DOWN_SWITCH    </newseq></port>
-	            <porttype="P1_BUTTON1">             <newseq type="standard">JOYCODE_1_BUTTON1        </newseq></port>
-	            <porttype="P1_BUTTON2">             <newseq type="standard">JOYCODE_1_BUTTON3        </newseq></port>
-	            <porttype="P1_BUTTON3">             <newseq type="standard">JOYCODE_1_BUTTON5        </newseq></port>
-	            <porttype="P1_BUTTON5">             <newseq type="standard">JOYCODE_1_BUTTON2        </newseq></port>
-	            <porttype="P1_BUTTON6">             <newseq type="standard">JOYCODE_1_BUTTON4        </newseq></port>
-	            <porttype="P1_BUTTON7">             <newseq type="standard">JOYCODE_1_BUTTON6        </newseq></port>
-	            <porttype="P1_START">               <newseq type="standard">JOYCODE_1_BUTTON9        </newseq></port>
-	            <porttype="P1_SELECT">              <newseq type="standard">JOYCODE_1_BUTTON10        </newseq></port>
-	            <porttype="COIN1">                  <newseq type="standard">JOYCODE_1_BUTTON8        </newseq></port>
-	            <porttype="POWER_OFF">              <newseq type="standard">JOYCODE_1_BUTTON7        </newseq></port>
+	        <input> 
+		    <port type="P1_JOYSTICK_UP"> <newseq type="standard"> JOYCODE_1_XAXIS_RIGHT_SWITCH </newseq> </port>
+	            <port type="P1_JOYSTICK_DOWN"> <newseq type="standard"> JOYCODE_1_XAXIS_LEFT_SWITCH </newseq> </port>
+	            <port type="P1_JOYSTICK_LEFT"> <newseq type="standard"> JOYCODE_1_YAXIS_UP_SWITCH </newseq> </port>
+	            <port type="P1_JOYSTICK_RIGHT"> <newseq type="standard"> JOYCODE_1_YAXIS_DOWN_SWITCH </newseq> </port>
 	
-	            <port    type="P2_JOYSTICK_UP">     <newseq type="standard">JOYCODE_2_XAXIS_RIGHT_SWITCH    </newseq></port>
-	            <port    type="P2_JOYSTICK_DOWN">   <newseq type="standard">JOYCODE_2_XAXIS_LEFT_SWITCH    </newseq></port>
-	            <port    type="P2_JOYSTICK_LEFT">   <newseq type="standard">JOYCODE_2_YAXIS_UP_SWITCH    </newseq></port>
-	            <port    type="P2_JOYSTICK_RIGHT">  <newseq type="standard">JOYCODE_2_YAXIS_DOWN_SWITCH    </newseq></port>
-	            <port    type="P2_BUTTON1">         <newseq type="standard">JOYCODE_2_BUTTON1        </newseq></port>
-	            <port    type="P2_BUTTON2">         <newseq type="standard">JOYCODE_2_BUTTON3        </newseq></port>
-	            <port    type="P2_BUTTON3">         <newseq type="standard">JOYCODE_2_BUTTON5        </newseq></port>
-	            <port    type="P2_BUTTON5">         <newseq type="standard">JOYCODE_2_BUTTON2        </newseq></port>
-	            <port    type="P2_BUTTON6">         <newseq type="standard">JOYCODE_2_BUTTON4        </newseq></port>
-	            <port    type="P2_BUTTON7">         <newseq type="standard">JOYCODE_2_BUTTON6        </newseq></port>
-	            <port    type="P2_START">           <newseq type="standard">JOYCODE_2_BUTTON9        </newseq></port>
-	            <port    type="P2_SELECT">          <newseq type="standard">JOYCODE_2_BUTTON10        </newseq></port>
-	            <port    type="COIN2">              <newseq type="standard">JOYCODE_2_BUTTON8        </newseq></port>
-	            <port    type="POWER_OFF">          <newseq type="standard">JOYCODE_2_BUTTON7        </newseq></port>
+	            <port type="P1_BUTTON1"> <newseq type="standard"> JOYCODE_1_BUTTON1 </newseq> </port>
+	            <port type="P1_BUTTON2"> <newseq type="standard"> JOYCODE_1_BUTTON3 </newseq> </port>
+	            <port type="P1_BUTTON3"> <newseq type="standard"> JOYCODE_1_BUTTON5 </newseq> </port>
+	            <port type="P1_BUTTON4"> <newseq type="standard"> JOYCODE_1_BUTTON7 </newseq> </port>
+	
+	            <port type="P1_BUTTON5"> <newseq type="standard"> JOYCODE_1_BUTTON2 </newseq> </port>
+	            <port type="P1_BUTTON6"> <newseq type="standard"> JOYCODE_1_BUTTON4 </newseq> </port>
+	            <port type="P1_BUTTON7"> <newseq type="standard"> JOYCODE_1_BUTTON6 </newseq> </port>
+	
+	            <port type="P1_BUTTON8"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P1_BUTTON9"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P1_BUTTON10"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P1_BUTTON11"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P1_BUTTON12"> <newseq type="standard"> NONE </newseq> </port>
+	
+	            <port type="P1_START"> <newseq type="standard"> JOYCODE_1_BUTTON9 </newseq> </port>
+	            <port type="P1_SELECT"> <newseq type="standard"> JOYCODE_1_BUTTON10 </newseq> </port>
+	            <port type="COIN1"> <newseq type="standard"> JOYCODE_1_BUTTON8 </newseq> </port>
+	            <port type="START1"> <newseq type="standard"> KEYCODE_1 OR JOYCODE_1_BUTTON9 </newseq> </port>
+	
+	            <port type="P1_PEDAL"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq>
+	            </port> <port type="P1_PEDAL2"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> </port>
+	            <port type="P1_PEDAL3"> <newseq type="increment"> NONE </newseq> </port>
+	            <port type="P1_PADDLE"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_PADDLE_V"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_POSITIONAL"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_POSITIONAL_V"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_DIAL"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_DIAL_V"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_TRACKBALL_X"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_TRACKBALL_Y"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_AD_STICK_X"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_AD_STICK_Y"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_AD_STICK_Z"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_LIGHTGUN_X"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P1_LIGHTGUN_Y"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	
+	
+	
+		    <port type="P2_JOYSTICK_UP"> <newseq type="standard"> JOYCODE_2_XAXIS_RIGHT_SWITCH </newseq> </port>
+	            <port type="P2_JOYSTICK_DOWN"> <newseq type="standard"> JOYCODE_2_XAXIS_LEFT_SWITCH </newseq> </port>
+	            <port type="P2_JOYSTICK_LEFT"> <newseq type="standard"> JOYCODE_2_YAXIS_UP_SWITCH </newseq> </port>
+	            <port type="P2_JOYSTICK_RIGHT"> <newseq type="standard"> JOYCODE_2_YAXIS_DOWN_SWITCH </newseq> </port>
+	
+	            <port type="P2_BUTTON1"> <newseq type="standard"> JOYCODE_2_BUTTON1 </newseq> </port>
+	            <port type="P2_BUTTON2"> <newseq type="standard"> JOYCODE_2_BUTTON3 </newseq> </port>
+	            <port type="P2_BUTTON3"> <newseq type="standard"> JOYCODE_2_BUTTON5 </newseq> </port>
+	            <port type="P2_BUTTON4"> <newseq type="standard"> JOYCODE_2_BUTTON7 </newseq> </port>
+	
+	            <port type="P2_BUTTON5"> <newseq type="standard"> JOYCODE_2_BUTTON2 </newseq> </port>
+	            <port type="P2_BUTTON6"> <newseq type="standard"> JOYCODE_2_BUTTON4 </newseq> </port>
+	            <port type="P2_BUTTON7"> <newseq type="standard"> JOYCODE_2_BUTTON6 </newseq> </port>
+	
+	            <port type="P2_BUTTON8"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P2_BUTTON9"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P2_BUTTON10"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P2_BUTTON11"> <newseq type="standard"> NONE </newseq> </port>
+	            <port type="P2_BUTTON12"> <newseq type="standard"> NONE </newseq> </port>
+	
+	            <port type="P2_START"> <newseq type="standard"> JOYCODE_2_BUTTON9 </newseq> </port>
+	            <port type="P2_SELECT"> <newseq type="standard"> JOYCODE_2_BUTTON10 </newseq> </port>
+	            <port type="COIN2"> <newseq type="standard"> JOYCODE_2_BUTTON8 </newseq> </port>
+	            <port type="START2"> <newseq type="standard"> KEYCODE_2 OR JOYCODE_2_BUTTON9 </newseq> </port>
+	
+	            <port type="P2_PEDAL"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq>
+	            </port> <port type="P2_PEDAL2"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> </port>
+	            <port type="P2_PEDAL3"> <newseq type="increment"> NONE </newseq> </port>
+	            <port type="P2_PADDLE"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_PADDLE_V"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_POSITIONAL"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_POSITIONAL_V"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_DIAL"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_DIAL_V"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_TRACKBALL_X"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_TRACKBALL_Y"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_AD_STICK_X"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_AD_STICK_Y"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_AD_STICK_Z"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_LIGHTGUN_X"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	            <port type="P2_LIGHTGUN_Y"> <newseq type="standard"> NONE </newseq> <newseq type="increment"> NONE </newseq> <newseq type="decrement"> NONE </newseq> </port>
+	
 	        </input>
 	    </system>
 	</mameconfig>
-	EOF
-	sudo chown -R kodi.kodi /home/kodi/.mame
-	sudo chmod ugo-w /home/kodi/.mame/cfg/
 	```
+
+	Then you need to copy it to `/media/usb/AML-assets/ctrlr/`.
 
 	Then you can edit this file to adjust it to you own joystick. My joystick (which I built myself, hence the _little_ problem :-) ) has a 90 degrees misconfiguration. So UP is right, RIGHT is down, etc... In the XML file, you have two parts. one for the _Player 1_ joystick and another part for the _Player 2_. Each line with `type="P1_JOYSTICK_UP"` (etc...) is the direction as understood by `mame`. Then, the real configuration comes after as `JOYCODE_1_XAXIS_RIGHT_SWITCH`. Therefore, this line means that when my joystick sends a code for `RIGHT`, `mame` will interpret it as `UP`. Below this, I configured the buttons 1 to 8 and the `START` and `SELECT` buttons. Then I do the same for the Player's 2 joystick.
 
-	TODO
+	Finally, you can add it to the `mame.ini` configuration file by doing
+	```bash
+	echo "ctrlr myjoyremap" | sudo tee -a /etc/mame/mame.ini
+	```
 
 ## Remove unused software to save memory and CPU cycles
 
@@ -537,6 +624,24 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 	```
 
 	Personally, I'm a big fan of a software called `synaptic` which is a GUI for apt-based systems like Ubutun and Debian. I recommend it.
+
+## Set the clock to your own time zone
+
+You can synchronize the clock to a time server on the net and always have your Odroid set to the most accurate time. Moreover, you want to set the clock to your timezone.
+
+1. First we install an NTP (Network Time Protocol) client which will connect to time server to get an accurate time
+	```bash
+	sudo apt install chrony
+	```
+
+2. Then we search for the time zone. It will be something like `Europe/Zurich` or `Pacific/Auckland`. To find yours do:
+	```bash
+	timedatectl list-timezones
+	```
+	Search and note your own time zone. Let's say you live near the North Pole in [Longyearbyen](https://en.wikipedia.org/wiki/Longyearbyen), you will find the time zone in the list given above as `Arctic/Longyearbyen`. Then tune your Odroid XU4 by doing:
+	```bash
+	sudo timedatectl set-timezone Arctic/Longyearbyen
+	```
 
 ---
 ### Support my work by making a small donation
