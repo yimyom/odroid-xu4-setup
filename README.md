@@ -376,12 +376,10 @@ This section is long and will require external resources if you want to have all
 	```
 
 4. Add assets
-	1.  In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
-		You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
+	1. Go back to Kodi: type 'Ctrl+D' on your terminal, then 'Atl+F7' to go back to Kodi.
 
-	2. Next step is to follow (again) [this guide](https://forum.kodi.tv/showthread.php?tid=304186) in the paragraph _Setting up Advanced MAME Launcher (Easy mode)_.
-		In order to do that, you have to `exit` from the text terminal you're connected too. Type in `exit` or use the combination `Ctrl+D`. Then go back to Kodi's screen by hitting `Alt+F7`.
-		When in Kodi, follow the paragraph mentionned above.
+	2.  In https://forum.kodi.tv/showthread.php?tid=304186, you can follow the paragraph called _Setting up MAME assets and Software List assets_ to add more resources and assets. This is the way to get extra pictures, logos, etc...
+		You can read the page here: http://forum.pleasuredome.org.uk/index.php?showtopic=30715 about the MAME Extra packages to understand all the type of resources you can find on the Net for Mame.
 
 	3. On the above mentioned page, you can find links to Mame resources on the Internet. They come in huge packages you simply have to move to `/media/usb/mame` as we created before. Let me give you some examples about those packages, which can be useful in the process:
 		- if you find a package called `MAME 0.xxx EXTRAs` where `xxx` is a Mame version number, go into the directory you have downloaded. In this directory, you will find more directories. Move their content to the corresponding directory in `/media/usb/mame/AML-assets/<some directory>`
@@ -398,7 +396,7 @@ This section is long and will require external resources if you want to have all
 	```
 
 5. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_. When it's installed, you go to the configuration and configure it with the following values:
-	1. in Kodi, go to **Settings**, **Addon settins**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
+	1. in Kodi, go to **Settings**, **Addon settings**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
 	2. Open AML settings, in the tab Paths configure the MAME executable and the ROMs path
 	![amlconf01](/images/amlconf01.png)
 	3. Configure the paths to MAME assets
