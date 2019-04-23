@@ -429,15 +429,15 @@ This section is long and will require external resources if you want to have all
 	1. in Kodi, go to **Settings**, **Addon settings**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it. Follow the picture in the order:
 	![amlconf001](/images/amlconf001.png)
 
-	2. After it's installed, right-click on the add-ons logo and go to settings:
+	2. After it's installed, right-click on the add-ons logo and go to _Settings_:
 	![amlconf002](/images/amlconf002.png)
 
-	3. Change the pathis to the executable and data directories as shown on the picture:
+	3. Change the paths to the executable and the data directories as shown on the picture:
 	![amlconf003](/images/amlconf003.png)
 
 	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
 
-	5. Select any row, open the context menu with a right-click, select **Setup plugin**.
+	5. Select any row, open the context menu with a right-click and select **Setup plugin**.
 
 	6. And run a full setup and configuration of the plugin by choosing the _All in one step_ options in the context menu of the plugin:
 	![amlconf004](/images/amlconf004.png)
@@ -630,7 +630,7 @@ I selected a few services which I think are not necessary for a Kodi/Mame instal
 
 You can synchronize the clock to a time server on the net and always have your Odroid set to the most accurate time. Moreover, you want to set the clock to your timezone.
 
-1. First we install an NTP (Network Time Protocol) client which will connect to time server to get an accurate time
+1. First we install an [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol) (Network Time Protocol) client which will connect to time server to get an accurate time
 	```bash
 	sudo apt install chrony
 	```
