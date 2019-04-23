@@ -1,4 +1,4 @@
-**WARNING: This is a work in progress as of 3.4.2019. Don't use it yet, until the version number below reaches 1.0**
+**WARNING: This is a work in progress as of 23.4.2019. Don't use it yet, until the version number below reaches 1.0**
 
 # odroid-xu4-setup
 **VERSION 0.9**
