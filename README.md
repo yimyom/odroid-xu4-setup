@@ -26,7 +26,7 @@ To install all of this, follow the steps:
 
 2. Check your image is valid with `md5sum`
 
-	and compare the result with the corresponding m5sum file you can find here: https://odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/
+	and compare the result with the corresponding [`md5sum` file](https://odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/).
 
 	```bash
 	md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
