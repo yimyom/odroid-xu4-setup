@@ -20,7 +20,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 
 To install all of this, follow the steps:
 
-1. The first step is ideally done on another Linux box. If you don't have one yet (what ???), better to migrate to Linux as soon as you can
+1. The first step is ideally done on another Linux box. If you don't have one yet (_wait,what?_), better to migrate to Linux as soon as you can
 
 	Download an image from https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203
 
@@ -47,7 +47,7 @@ To install all of this, follow the steps:
 
 	**WARNING**
 
-	Let's assume your SD card is on /dev/sdX. Be very careful to choose the correct device or you will risk to erase the content of another disk.
+	Let's assume your SD card is on `/dev/sdX`. Be very careful to choose the correct device or you will risk to erase the content of another disk.
 
 	**WARNING**
 
@@ -68,7 +68,7 @@ To install all of this, follow the steps:
 
 	Then login on the desktop with the credentials as given at https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#access_credentials
 
-	At this stage you have a fully functional Odroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set
+	At this stage you have a fully functional Odroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set.
 
 9. Open a terminal (search in the menu on the top-left of the screen)
 
@@ -80,13 +80,13 @@ To install all of this, follow the steps:
 	sudo apt dist-upgrade
 	```
 
-	During the update, the first time you boot your machine, you may get an error regarding a lock file with dpkg (/var/lib/dpkg/lock), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again.
+	During the update, the first time you boot your machine, you may get an error regarding a lock file with dpkg (`/var/lib/dpkg/lock`), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again.
 
 	During the update, if you get a message about boot.ini being replaced, just say 'OK'
 
-	During the update, if you get a question about /etc/apt-fast.conf, answer Y (for Yes)
+	During the update, if you get a question about `/etc/apt-fast.conf`, answer Y (for Yes)
 
-11. The good news is that kodi installed by default. Kodi is installed by default. But if by any chance it is not (?), you can install it with:
+11. Install Kodi now:
 
 	```bash
 	sudo apt install kodi kodi-bin kodi-data libcec4 python-libcec
@@ -94,9 +94,9 @@ To install all of this, follow the steps:
 
 12. The Mali graphical driver is installed by default and works well. Go in a terminal and run
 	`glmark2-es2` and you should see a demo (a horse). FPS should be around 300 frames/second
-	run `glmark2` and you should see the same demo. FPS should be around 30 frames/second. Terrible! The reason is because the Mali driver only supports OpenGL ES (Embedded System) and not plain OpenGL. The solution is to use a library called [gl4es](https://github.com/ptitSeb/gl4es), which you can find on Github.
+	run `glmark2` and you should see the same demo. FPS should be around 30 frames/second. Terrible! The reason is because the Mali driver only supports OpenGL ES (Embedded System) and not plain OpenGL. The solution is to use a library called [`gl4es`](https://github.com/ptitSeb/gl4es), which you can find on Github.
 
-13. Install gl4es
+13. Install `gl4es`
 
 	In a terminal, install the following development tools:
 
@@ -160,7 +160,7 @@ To install all of this, follow the steps:
 	glmark2
 	```
 	and this time you should see FPS around 300 to 600. 
-	At this stage, your Odroid XU4 also have full OpenGL support. You can even use software like [Blender](https://www.blender.org/).
+	At this stage, your Odroid XU4 also have full OpenGL support. You can even use a software like [Blender](https://www.blender.org/).
 
 14. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
 
@@ -425,22 +425,23 @@ This section is long and will require external resources if you want to have all
 	sudo chown -R kodi.kodi /media/usb/mame
 	```
 
-5. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_. When it's installed, you go to the configuration and configure it with the following values:
-	1. in Kodi, go to **Settings**, **Addon settings**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it.
-	2. Open AML settings, in the tab Paths configure the MAME executable and the ROMs path
-	![amlconf01](/images/amlconf01.png)
-	3. Configure the paths to MAME assets
-	![amlconf02](/images/amlconf02.png)
-	![amlconf03](/images/amlconf03.png)
-	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
-	5. Select any row, open the context menu with a right-click, select **Setup plugin** and execute in the following order:
-	![amlconf04](/images/amlconf04.png)
+5. Install and configure the AML plugin. You will find it in Program Adds-on. It's called _Advanced Mame Launcher_.
+	1. in Kodi, go to **Settings**, **Addon settings**, **Install from repository**. In **Program add-ons**, look for **Advanced Mame Launcher** and install it. Follow the picture in the order:
+	![amlconf001](/images/amlconf001.png)
 
-		1. **Extract MAME.xml**. It will take a few minutes and you will see, at the end, the following screen:
-		![amlconf05](/images/amlconf05.png)
-		2. go back to the **Setup plugin** as before and select **Build all databases**. Several little windows with a progress bar will appear and disappear. Then you will see a new progress bar saying _Building main MAME database_. It will take several minutes to complete. Then another progress bar saying _Saving databases_. This one too will be long.
-		![amlconf06](/images/amlconf06.png)
-		3. Again, **Setup plugin** and **Scan everything**. This step will take a few minutes too and display many progress bars again.
+	2. After it's installed, right-click on the add-ons logo and go to settings:
+	![amlconf002](/images/amlconf002.png)
+
+	3. Change the pathis to the executable and data directories as shown on the picture:
+	![amlconf003](/images/amlconf003.png)
+
+	4. Go back to Kodi's initial screen and look for the AML plugin, in general **Add-ons**, **Program Add-ons**, **Advanced Mame Launcher**.
+
+	5. Select any row, open the context menu with a right-click, select **Setup plugin**.
+
+	6. And run a full setup and configuration of the plugin by choosing the _All in one step_ options in the context menu of the plugin:
+	![amlconf004](/images/amlconf004.png)
+	This step can take several minutes to an hour. You will see a lots of progress bars. If you did everything well before, it should work without error messages. The plugin is not configured and ready.
 
 <br/>
 
