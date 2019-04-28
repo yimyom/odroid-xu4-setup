@@ -205,7 +205,7 @@ To install all of this, follow the steps:
 	Group = kodi
 	Type = simple
 	#PAMName = login # you might want to try this one, did not work on all systems
-	ExecStart = /usr/bin/xinit /usr/bin/dbus-launch --exit-with-session "openbox --sm-disable --startup /usr/bin/kodi-standalone" -- :0 -nolisten tcp vt7
+	ExecStart = /usr/bin/xinit /usr/bin/dbus-launch --exit-with-session openbox --startup /usr/bin/kodi-standalone -- :0 -nolisten tcp vt7
 	Restart = on-abort
 	RestartSec = 5
 
