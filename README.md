@@ -89,7 +89,7 @@ To install all of this, follow the steps:
 11. Install Kodi now:
 
 	```bash
-	sudo apt install kodi kodi-bin kodi-data libcec4 python-libcec
+	sudo apt install kodi kodi-bin kodi-data libcec4 python-libcec openbox
 	```
 
 12. The Mali graphical driver is installed by default and works well. Go in a terminal and run
@@ -197,7 +197,7 @@ To install all of this, follow the steps:
 	[Unit]
 	Description = Kodi Media Center
 
-	After = systemd-user-sessions.service network.target sound.target mysql.service
+	After = systemd-user-sessions.service network.target sound.target mysql.service dbus.service polkit.service upower.service 
 	Wants = mysql.service
 
 	[Service]
@@ -205,7 +205,7 @@ To install all of this, follow the steps:
 	Group = kodi
 	Type = simple
 	#PAMName = login # you might want to try this one, did not work on all systems
-	ExecStart = /usr/bin/xinit /usr/bin/dbus-launch --exit-with-session /usr/bin/kodi-standalone -- :0 -nolisten tcp vt7
+	ExecStart = /usr/bin/xinit /usr/bin/dbus-launch --exit-with-session "openbox --sm-disable --startup /usr/bin/kodi-standalone" -- :0 -nolisten tcp vt7
 	Restart = on-abort
 	RestartSec = 5
 
@@ -283,7 +283,7 @@ This section is long and will require external resources if you want to have all
 1. Install MAME
 
 	```bash
-	sudo apt install mame mame-data mame-doc mame-extra mame-tools libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-net-2.0-0 
+	sudo apt install mame mame-data mame-doc mame-extra mame-tools libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-net-2.0-0 python-pil
 	```
 
 	Create a new config file with the correct paths, using OpenGL ES 2, the ALSA audio driver, tuning the speed and using all the cores:
@@ -322,7 +322,6 @@ This section is long and will require external resources if you want to have all
 	#!/bin/sh
 	export LIBGL_SILENTSTUB=1
 	export LIBGL_NOBANNER=1
-
 	/usr/games/mame "$@"
 	EOF
 	sudo chmod ugo+x /usr/local/bin/mame
@@ -441,7 +440,25 @@ This section is long and will require external resources if you want to have all
 
 	6. And run a full setup and configuration of the plugin by choosing the _All in one step_ options in the context menu of the plugin:
 	![amlconf004](/images/amlconf004.png)
-	This step can take several minutes to an hour. You will see a lots of progress bars. If you did everything well before, it should work without error messages. The plugin is not configured and ready.
+	This step can take several minutes to an hour. You will see a lots of progress bars. If you did everything well before, it should work without error messages. The plugin is now configured and ready.
+
+	7. Add a new _skin_ to improve the presentation of games:
+	```bash
+	wget https://github.com/Wintermute0110/skin.estuary.AEL/archive/master.zip
+	unzip master.zip
+	mv skin.estuary.AEL-master skin.estuary.AEL
+	zip -r skin.estuary.AEL.zip skin.estuary.AEL/
+	rm -rf master.zip skin.estuary.AEL
+	sudo mv skin.estuary.AEL.zip /home/kodi
+	```
+
+	And go back to Kodi and install the zip file from the addon manager by using the option _Install from zip file_.
+	The file is in the directory `/home/kodi` and is called `skin.estuary.AEL.zip`.
+
+	After you're done, remove the file:
+	```bash
+	sudo rm /home/kodi/skin.estuary.AEL.zip
+	```
 
 <br/>
 
