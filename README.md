@@ -440,24 +440,6 @@ This section is long and will require external resources if you want to have all
 	![amlconf004](/images/amlconf004.png)
 	This step can take several minutes to an hour. You will see a lots of progress bars. If you did everything well before, it should work without error messages. The plugin is now configured and ready.
 
-	7. Add a new _skin_ to improve the presentation of games:
-	```bash
-	wget https://github.com/Wintermute0110/skin.estuary.AEL/archive/master.zip
-	unzip master.zip
-	mv skin.estuary.AEL-master skin.estuary.AEL
-	zip -r skin.estuary.AEL.zip skin.estuary.AEL/
-	rm -rf master.zip skin.estuary.AEL
-	sudo mv skin.estuary.AEL.zip /home/kodi
-	```
-
-	And go back to Kodi and install the zip file from the addon manager by using the option _Install from zip file_.
-	The file is in the directory `/home/kodi` and is called `skin.estuary.AEL.zip`.
-
-	After you're done, remove the file:
-	```bash
-	sudo rm /home/kodi/skin.estuary.AEL.zip
-	```
-
 <br/>
 
 **And Mame is ready!**
