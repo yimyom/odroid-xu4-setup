@@ -641,6 +641,27 @@ You can synchronize the clock to a time server on the net and always have your O
 	sudo timedatectl set-timezone Arctic/Longyearbyen
 	```
 
+# More configuration
+In the following, I'll give a few tricks to improve the overall configuration. It was not part of the configuration above because I discovered those problems after upgrading the system.
+Most of the tricks will require you to connect, ideally with `ssh` to your Odroid machine. Most of them can be executed as a super user. After login to your Odroid, you can switch to the super user with
+    ```bash
+    sudo bash
+    ```
+
+## Upgrading regularly
+    ```bash
+    apt update
+    apt upgrade
+    ```
+Yes, that's it, no need to rebot or anything. Come on, it's Linux. It's simple and efficient.
+
+## Unwanted windows' decorations
+After upgrading, I had window decorations around Kodi. Obviously, it's not something I want in a media center. To remove them it's simple:
+    ```bash
+    cd /home/kodi/.config/openbox
+    sed -i 's#<applications>#<applications> <application name="*"> <decor>no</decor> </application>#' rc.xml
+    ```
+
 ---
 ### Support my work by making a small donation
 <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1" />
@@ -660,5 +681,5 @@ You can synchronize the clock to a time server on the net and always have your O
 
 ---
 David Bellot
-Sydney, NSW, Australia
+Sydney, Australia
 2019
