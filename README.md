@@ -644,6 +644,10 @@ You can synchronize the clock to a time server on the net and always have your O
 # More configuration
 In the following, I'll give a few tricks to improve the overall configuration. It was not part of the configuration above because I discovered those problems after upgrading the system.
 Most of the tricks will require you to connect, ideally with `ssh` to your Odroid machine. Most of them can be executed as a super user. After login to your Odroid, you can switch to the super user with
+
+	```bash
+	sudo timedatectl set-timezone Arctic/Longyearbyen
+	```
 	```bash
 	sudo bash
 	```
