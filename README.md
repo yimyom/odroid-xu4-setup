@@ -13,6 +13,7 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
 5. [Remove unused software to save memory and CPU cycles](#Remove-unused-software-to-save-memory-and-CPU-cycles)<br/>
 6. [Set the clock to your own time zone](#Set-the-clock-to-your-own-time-zone)
+7. [More configuration](#More-configuration)  
 
 ## Install Linux and Kodi on your Odroid XU4
 
