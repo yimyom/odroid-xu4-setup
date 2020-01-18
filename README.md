@@ -645,7 +645,6 @@ You can synchronize the clock to a time server on the net and always have your O
 # More configuration
 
 In the following, I'll give a few tricks and tips to improve your configuration in general. In general, it's better to either connect with ssh to your ODroid-XU4 box or simply connect a keyboard. Most of them should be executed as a super user. You can, for example, do the following to open a super-user session, and therefore you won't have to repeat the command `sudo` everytime. Don't forget to log off from the super user when you're done (Ctrl-D or `exit` will do it):
-
 	```bash
 	sudo bash
 	```
