@@ -1,10 +1,12 @@
 # odroid-xu4-setup
-**VERSION 1.0**
+**VERSION 1.2**
 
 How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
 I describe all the steps to install Ubuntu Linux on an Odroid XU4 and use it as a media and game center using Kodi and Mame.
 Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine. Not all the steps are straightforward and some of them implies that you read another documentation on the web. I did all the research for you and give links to the webpage you will need to follow or simply read in order to understand necessary concepts. The first part on building Kodi is self-contained. The part on Mame will require external readings. The rest is self-contained again.
+
+This guide has been updated to the latest available Ubuntu version (20.04 as the time of writing).
 
 ##### Table of contents
 1. [Install Linux and Kodi on your Odroid XU4](#Install-Linux-and-Kodi-on-your-Odroid-XU4)<br/>
@@ -17,27 +19,28 @@ Installing Mame is optional as well as configuring the USB drive, the joystick, 
 
 ## Install Linux and Kodi on your Odroid XU4
 
+All along this guide, I will assume you have access to a Linux box and all the command lines below are for Linux, either your other Linux machine or the Odroid XU-4 we're going to install now.
 To install all of this, follow the steps:
 
 1. The first step is ideally done on another Linux box. If you don't have one yet (_wait,what?_), better to migrate to Linux as soon as you can
 
-	Download an image from https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203
+	Download an image from https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz 
 
 2. Check your image is valid with `md5sum`
 
-	and compare the result with the corresponding [`md5sum` file](https://odroid.in/ubuntu_18.04lts/XU3_XU4_MC1_HC1_HC2/).
+	and compare the result with the corresponding [`md5sum` file](https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum).
 
 	```bash
-	md5sum	ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
+	md5sum ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
 	```
 
-3. Assuming you're doing all of this on a Linux box, decompress the file you downloaded:
+3. Uncompress the file first you've downloaded:
 
-	```sh
+	```bash
 	xz -d ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
 	```
 
-4. Plugin your SD card on an USB port of your Linux box
+4. Put an SD card with enough capacity in your Linux machine
 5. Search for the device with `lsblk`
 
 	```bash
@@ -57,7 +60,7 @@ To install all of this, follow the steps:
 	sudo sync
 	```
 
-7. Umount your SD card either from your desktop environment or on the command line:
+7. Umount your SD card either from your desktop environment or on the command line with. This step is not required but can be necessary:
 
 	```bash
 	sudo umount /dev/sdX
