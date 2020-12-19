@@ -1,5 +1,5 @@
 # odroid-xu4-setup
-**VERSION 1.2**
+**VERSION pre1.2**
 
 How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
