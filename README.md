@@ -1,5 +1,5 @@
 # odroid-xu4-setup
-**VERSION 1.2**
+**VERSION pre1.2**
 
 How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 
@@ -24,11 +24,11 @@ To install all of this, follow the steps:
 
 1. The first step is ideally done on another Linux box. If you don't have one yet (_wait,what?_), better to migrate to Linux as soon as you can
 
-	Download an image from https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz 
+	Download the minimal Ubuntu image and its MD5 sum file:
+    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
+    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
 
-2. Check your image is valid with `md5sum`
-
-	and compare the result with the corresponding [`md5sum` file](https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum).
+2. Check your image is valid with `md5sum` and compare the result with the content of the previously downloaded md5sum above
 
 	```bash
 	md5sum ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
@@ -37,7 +37,7 @@ To install all of this, follow the steps:
 3. Uncompress the file first you've downloaded:
 
 	```bash
-	xz -d ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz
+	xz -d ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
 	```
 
 4. Put an SD card with enough capacity in your Linux machine
@@ -56,7 +56,7 @@ To install all of this, follow the steps:
 6. Write the image to the SD card
 
 	```bash
-	sudo dd if=ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz of=/dev/sdX bs=1M conv=fsync
+	sudo dd if=ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz of=/dev/sdX bs=1M conv=fsync status=progress
 	sudo sync
 	```
 
@@ -66,11 +66,21 @@ To install all of this, follow the steps:
 	sudo umount /dev/sdX
 	```
 
-8. Insert your SD card in your odroid XU4 and boot it up
+8. Insert your SD card in your odroid XU4 and boot your machine
 
-	Then login on the desktop with the credentials as given at https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#access_credentials
+    Check the release notes pages to find the credentials:
+    https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_5.4/minimal/20200812
+    Usually, the login is `root` and the password is `odroid`. Obviously, you want to change them immediately after logging in.
 
-	At this stage you have a fully functional Odroid XU4 desktop. The next step will be to install Kodi and remove this direct desktop access so that your box will directly boot on the Kodi interface more like a regular TV set.
+	At this stage you have a fully text-based functional ODroid XU4 machine. The next steps can either be done from your XU4 by connecting a keyboard to it or you can SSH from another machine to the XU4. I recommend using the Ethernet port at first. It is much simpler to configure than a wifi. But both wifi and Ethernet will work.
+
+8. _Optional_: if you want to SSH to your XU4, you must first find the IP address of your XU4:
+
+    ```bash
+    ip addr
+    ```
+    The IP address is after the `inet` keyboard. The result of the command above gives a list of at least two entries. Usually the first one is called `lo` and is the _loopback_ network interface. It's a fake network interface which creates a network with one machine only. It is used if you want to test a networked program for which the client and the server applications are on the same machine.
+    Usually, the second entry is _eth0_ and denotes the Ethernet port of your XU4. It's the one you want and the IP address you need is after the `inet` keyword. Use this address from your other machine to connect to your XU4
 
 9. Open a terminal (search in the menu on the top-left of the screen)
 
