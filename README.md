@@ -24,20 +24,20 @@ To install all of this, follow the steps:
 
 1. The first step is ideally done on another Linux box. If you don't have one yet (_wait,what?_), better to migrate to Linux as soon as you can
 
-	Download the minimal Ubuntu image and its MD5 sum file:
-    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
-    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
+	Download the Ubuntu image and its MD5 sum file:
+    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz
+    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz.md5sum
 
 2. Check your image is valid with `md5sum` and compare the result with the content of the previously downloaded md5sum above
 
 	```bash
-	md5sum ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
+	md5sum ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz
 	```
 
 3. Uncompress the file first you've downloaded:
 
 	```bash
-	xz -d ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
+	xz -d ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz
 	```
 
 4. Put an SD card with enough capacity in your Linux machine
@@ -72,7 +72,7 @@ To install all of this, follow the steps:
     https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_5.4/minimal/20200812
     Usually, the login is `root` and the password is `odroid`. Obviously, you want to change them immediately after logging in.
 
-	At this stage you have a fully text-based functional ODroid XU4 machine. The next steps can either be done from your XU4 by connecting a keyboard to it or you can SSH from another machine to the XU4. I recommend using the Ethernet port at first. It is much simpler to configure than a wifi. But both wifi and Ethernet will work.
+	At this stage you have a fully functional ODroid XU4 machine. The next steps can either be done from your XU4 by connecting a keyboard to it or you can SSH from another machine to the XU4. I recommend using the Ethernet port at first. It is much simpler to configure than a wifi. But both wifi and Ethernet will work.
 
 8. _Optional_: if you want to SSH to your XU4, you must first find the IP address of your XU4:
 
@@ -82,7 +82,9 @@ To install all of this, follow the steps:
     The IP address is after the `inet` keyboard. The result of the command above gives a list of at least two entries. Usually the first one is called `lo` and is the _loopback_ network interface. It's a fake network interface which creates a network with one machine only. It is used if you want to test a networked program for which the client and the server applications are on the same machine.
     Usually, the second entry is _eth0_ and denotes the Ethernet port of your XU4. It's the one you want and the IP address you need is after the `inet` keyword. Use this address from your other machine to connect to your XU4
 
-9. Connect as `root` as explained above either directly or through a SSH connection to your XU4
+9. Connect as `root` as explained above either directly or through a SSH connection to your XU4. Alternatively you can connect with the default `odroid` user and open a terminal. Then in the terminal do `sudo bash` to login as `root`.
+
+To connect from another machine with `ssh`:
 
     ```bash
     ssh root@192.168.xxx.zzz
@@ -95,34 +97,46 @@ To install all of this, follow the steps:
 	apt update
 	apt upgrade
 	apt dist-upgrade
+    apt autoremove
 	```
 
-	During the update:
+	During the update, you might encounter the following situations (or not):
     - the first time you boot your machine, you may get an error regarding a lock file with dpkg (`/var/lib/dpkg/lock`), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again.
 
 	- if you get a message about boot.ini being replaced, just say 'OK'
 
 	- if you get a question about `/etc/apt-fast.conf`, answer Y (for Yes)
 
-11. Install Kodi now:
+    The last command (`autoremove`) is to leave the system in a clean state and use a bit less disk by removing unecessary packages.
 
-	```bash
-	sudo apt install kodi kodi-bin kodi-data libcec4 python-libcec openbox
-	```
+12. The Mali graphical driver is installed by default and works well. However, the driver provided by ARM only implement OpenGL ES and not OpenGL:
 
-12. The Mali graphical driver is installed by default and works well. Go in a terminal and run
-	`glmark2-es2` and you should see a demo (a horse). FPS should be around 300 frames/second
-	run `glmark2` and you should see the same demo. FPS should be around 30 frames/second. Terrible! The reason is because the Mali driver only supports OpenGL ES (Embedded System) and not plain OpenGL. The solution is to use a library called [`gl4es`](https://github.com/ptitSeb/gl4es), which you can find on Github.
+    ```bash
+    apt install glmark2 glmark2-es2
+    ```
+
+    Then run:
+    ```bash
+    glmark2
+    ```
+    It works well, but if you read on the screen, you'll see the `GL_RENDERER` is `llvmpipe` which is a (very fast) software renderer. Nevertheless, it doesn't use the integrated Mali GPU in your odroid XU4.
+
+    Run:
+    ```bash
+    glmark2-es2
+    ```
+
+    And the `GL_RENDERER` is now `Mali-T628` because the second `glmark2-es2` uses OpenGL ES (ES=Embedded Systems). In order to have both, we need another OpenGL implementation which translates OpenGL commands into OpenGL ES commands.  OpenGL. The solution is to use a library called [`gl4es`](https://github.com/ptitSeb/gl4es).
 
 13. Install `gl4es`
 
 	In a terminal, install the following development tools:
 
 	```bash
-	sudo apt install git cmake xorg-dev gcc g++ build-essential
+	apt install git cmake xorg-dev gcc g++ build-essential
 	```
 
-	Get the source code of gl4es. So, gl4es is an implementation of OpenGL using ... OpenGL ES (instead of implementing the library directly). So for systems like Odroid XU4 with a driver supporting only OpenGL ES, it is possible to use software based on OpenGL too with hardware acceleration:
+    Then download the source code of GL4ES. It is an OpenGL replacement which uses OpenGL ES underneath, which in turn can use the integrated GPU. Therefore, it is possible to still have an hardware-accelerated OpenGL on Odroid XU4.
 
 	```bash
 	git clone https://github.com/ptitSeb/gl4es.git
@@ -134,30 +148,26 @@ To install all of this, follow the steps:
 	mkdir build
 	cd build
 	cmake .. -DODROID=1
-	make
+	make -j
 	```
 
 	It will compile and display its progress with a lot of messages. Toward the end, if the compilation has been successfull, you should see the following:
 	```
-	[ 96%] Building C object src/CMakeFiles/GL.dir/glx/utils.c.o
-	[ 98%] Linking C shared library ../lib/libGL.so.1
-	[100%] Built target 
+	[100%] Built target GL
 	```
 
-	Save the Mesa version of OpenGL (the one installed by default):
+	Now we backup the previous GL library and install the new one:
 
 	```bash
-	sudo mv /usr/lib/arm-linux-gnueabihf/libGL.so.1 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1
-	sudo mv /usr/lib/arm-linux-gnueabihf/libGL.so.1.0.0 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1.0.0
+    mv /usr/lib/arm-linux-gnueabihf/libGL.so.1.7.0 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1.7.0
+    rm /usr/lib/arm-linux-gnueabihf/libGL.so /usr/lib/arm-linux-gnueabihf/libGL.so.1
+    cd ../lib
+    cp libGL.so.1 /usr/lib/arm-linux-gnueabihf/
+    ln -s /usr/lib/arm-linux-gnueabihf/libGL.so.1 /usr/lib/arm-linux-gnueabihf/libGL.so
+    ldconfig
 	```
 
-	and copy your new compiled version:
-	```bash
-	sudo cp lib/libGL.so.1 /usr/lib/arm-linux-gnueabihf/
-	sudo ldconfig
-	```
-
-	Now check that everything is fine by running:
+	And finally we check that everything is fine by running:
 	```bash
 	glxinfo|head -6
 	```
@@ -165,7 +175,7 @@ To install all of this, follow the steps:
 	If you see the following, then you're good to go:
 	```
 	LIBGL: Initialising gl4es
-	LIBGL: v1.1.1 built on Mar 28 2019 06:22:26
+	LIBGL: v1.1.5 built on <some date>
 	LIBGL: Using GLES 2.0 backend
 	LIBGL: loaded: libGLESv2.so
 	LIBGL: loaded: libEGL.so
@@ -173,17 +183,19 @@ To install all of this, follow the steps:
 	```
 	(of course the date on the second line will be different for you)
 
-	Now you can run glmark2 again:
+	Running `glmark2` and `glmark2-es2` shoudl show similar performances now.
+	At this stage, your Odroid XU4 also has a full OpenGL support.
+
+11. Install Kodi now:
+
 	```bash
-	glmark2
+    apt install kodi kodi-data kodi-repository-kodi kodi-x11
 	```
-	and this time you should see FPS around 300 to 600. 
-	At this stage, your Odroid XU4 also have full OpenGL support. You can even use a software like [Blender](https://www.blender.org/).
 
 14. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
 
 	```bash
-	sudo adduser --disabled-password --gecos "" kodi
+	adduser --disabled-password --gecos "" kodi
 	```
 
 	The output will be:
@@ -198,14 +210,14 @@ To install all of this, follow the steps:
 15. Assign some privileges to this user:
 
 	```bash
-	sudo usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse,pulse-access,games kodi
+	usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse,pulse-access,games kodi
 	```
 
 16. Add options to allow Kodi to start its own X server:
 
 	```bash
-	sudo sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
-	sudo sed -ie "\$aneeds_root_rights = yes" /etc/X11/Xwrapper.config
+	sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
+	sed -ie "\$aneeds_root_rights = yes" /etc/X11/Xwrapper.config
 	```
 
 17. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
