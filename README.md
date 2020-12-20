@@ -82,21 +82,27 @@ To install all of this, follow the steps:
     The IP address is after the `inet` keyboard. The result of the command above gives a list of at least two entries. Usually the first one is called `lo` and is the _loopback_ network interface. It's a fake network interface which creates a network with one machine only. It is used if you want to test a networked program for which the client and the server applications are on the same machine.
     Usually, the second entry is _eth0_ and denotes the Ethernet port of your XU4. It's the one you want and the IP address you need is after the `inet` keyword. Use this address from your other machine to connect to your XU4
 
-9. Open a terminal (search in the menu on the top-left of the screen)
+9. Connect as `root` as explained above either directly or through a SSH connection to your XU4
+
+    ```bash
+    ssh root@192.168.xxx.zzz
+    ```
+    where `xxx` and `zzz` are replaced by the numbers you found doing `ip addr`.
 
 10. Update the packages
 
 	```bash
-	sudo apt update
-	sudo apt upgrade
-	sudo apt dist-upgrade
+	apt update
+	apt upgrade
+	apt dist-upgrade
 	```
 
-	During the update, the first time you boot your machine, you may get an error regarding a lock file with dpkg (`/var/lib/dpkg/lock`), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again.
+	During the update:
+    - the first time you boot your machine, you may get an error regarding a lock file with dpkg (`/var/lib/dpkg/lock`), it means that one of the automated update procedure is still running which is very likely with a new install. Just let it run until the end and try the commands again.
 
-	During the update, if you get a message about boot.ini being replaced, just say 'OK'
+	- if you get a message about boot.ini being replaced, just say 'OK'
 
-	During the update, if you get a question about `/etc/apt-fast.conf`, answer Y (for Yes)
+	- if you get a question about `/etc/apt-fast.conf`, answer Y (for Yes)
 
 11. Install Kodi now:
 
