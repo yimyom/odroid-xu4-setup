@@ -190,7 +190,7 @@ To connect from another machine with `ssh`:
 11. Install Kodi now:
 
 	```bash
-    apt install kodi kodi-data kodi-repository-kodi kodi-x11
+    apt install kodi kodi-data kodi-repository-kodi kodi-x11 openbox
 	```
 
 14. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
@@ -245,13 +245,11 @@ To connect from another machine with `ssh`:
 	EOF
 	```
 
-	A quick note on the first line, the `sudo` command works on `tee` to write with super-user rights to the file, because if I would do it on `cat` and follow the same pattern as the other commands in this document, the redirection to the file would not work. Indeed, the redirection is done by the shell (belonging to the user `odroid`) and not by the command. So `sudo cat` would not work.
-
 18. Enable Kodi at boot time:
 
 	```bash
-	sudo systemctl enable kodi
-	sudo systemctl set-default multi-user.target
+	systemctl enable kodi
+	systemctl set-default multi-user.target
 	```
 
 19. On the [Hardkernel Wiki](https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#known_issues_and_tips), it is said that a recent Canonical's EGL package blocked access to the Mali GPU. It is sooo true. The fix is as they said:
