@@ -201,12 +201,6 @@ To install all of this, follow the steps:
 	systemctl set-default multi-user.target
 	```
 
-19. On the [Hardkernel Wiki](https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#known_issues_and_tips), it is said that a recent Canonical's EGL package blocked access to the Mali GPU. It is sooo true. The fix is as they said:
-	```bash
-	apt install mali-x11 --reinstall
-	```
-	At the time of publication (end of April 2019), it fixes the loss of Mali GPU access bug. So it is highly recommended to apply this fix. In fact, if you update the system as I said before, you will have the bug and you will fix it by reinstall `mali-x11` as above.
-
 24.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
 
 In the next sections, I'll show you how to:
