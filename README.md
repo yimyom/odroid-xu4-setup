@@ -6,7 +6,7 @@ How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
 I describe all the steps to install Ubuntu Linux on an Odroid XU4 and use it as a media and game center using Kodi and Mame.
 Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine. Not all the steps are straightforward and some of them implies that you read another documentation on the web. I did all the research for you and give links to the webpage you will need to follow or simply read in order to understand necessary concepts. The first part on building Kodi is self-contained. The part on Mame will require external readings. The rest is self-contained again.
 
-This guide has been updated to the latest available Ubuntu version (20.04 as the time of writing).
+This guide has been updated to the latest available Ubuntu version (20.04 as the time of writing) and it will use no X11 environment at all to make a very light Kodi server.
 
 ##### Table of contents
 1. [Install Linux and Kodi on your Odroid XU4](#Install-Linux-and-Kodi-on-your-Odroid-XU4)<br/>
@@ -25,19 +25,21 @@ To install all of this, follow the steps:
 1. The first step is ideally done on another Linux box. If you don't have one yet (_wait,what?_), better to migrate to Linux as soon as you can
 
 	Download the Ubuntu image and its MD5 sum file:
-    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz
-    - https://odroid.in/ubuntu_20.04lts/XU3_XU4_MC1_HC1_HC2/ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz.md5sum
+    - https://dn.odroid.com/5422/ODROID-XU3/Ubuntu/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
+    - https://dn.odroid.com/5422/ODROID-XU3/Ubuntu/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
 
 2. Check your image is valid with `md5sum` and compare the result with the content of the previously downloaded md5sum above
 
 	```bash
-	md5sum ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz
+    md5sum ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
 	```
+
+    and compare the result with the content of the file `ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum`
 
 3. Uncompress the file first you've downloaded:
 
 	```bash
-	xz -d ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz
+	xz -d ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz 
 	```
 
 4. Put an SD card with enough capacity in your Linux machine
@@ -57,7 +59,7 @@ To install all of this, follow the steps:
 6. Write the image to the SD card
 
 	```bash
-	dd if=ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz of=/dev/sdX bs=1M conv=fsync status=progress
+	dd if=ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz of=/dev/sdX bs=1M conv=fsync status=progress
 	sync
 	```
 
@@ -98,7 +100,6 @@ To connect from another machine with `ssh`:
 	apt update
 	apt upgrade
 	apt dist-upgrade
-    apt autoremove
 	```
 
 	During the update, you might encounter the following situations (or not):
@@ -110,41 +111,15 @@ To connect from another machine with `ssh`:
 
     The last command (`autoremove`) is to leave the system in a clean state and use a bit less disk by removing unecessary packages.
 
-12. The Mali graphical driver is installed by default and works well. However, the driver provided by ARM only implement OpenGL ES and not OpenGL:
-
-    ```bash
-    apt install glmark2 glmark2-es2
-    ```
-
-    Then run:
-    ```bash
-    glmark2
-    ```
-    It works well, but if you read on the screen, you'll see the `GL_RENDERER` is `llvmpipe` which is a (very fast) software renderer. Nevertheless, it doesn't use the integrated Mali GPU in your odroid XU4.
-
-    Run:
-    ```bash
-    glmark2-es2
-    ```
-
-    And the `GL_RENDERER` is now `Mali-T628` because the second `glmark2-es2` uses OpenGL ES (ES=Embedded Systems). In order to have both, we need another OpenGL implementation which translates OpenGL commands into OpenGL ES commands.  OpenGL. The solution is to use a library called [`gl4es`](https://github.com/ptitSeb/gl4es).
-
-13. Install `gl4es`
-
-	In a terminal, install the following development tools:
+12. The Mali graphical driver is installed by default and works well. However, the driver provided by ARM only implement OpenGL ES and not OpenGL. We will use `gl4es` as a wrapper between OpenGL and OpenGL ES and therefore have a hardware-accelerated OpenGL on the Mali GPU in XU4:
 
 	```bash
 	apt install git cmake xorg-dev gcc g++ build-essential
-	```
-
-    Then download the source code of GL4ES. It is an OpenGL replacement which uses OpenGL ES underneath, which in turn can use the integrated GPU. Therefore, it is possible to still have an hardware-accelerated OpenGL on Odroid XU4.
-
-	```bash
 	git clone https://github.com/ptitSeb/gl4es.git
 	cd gl4es
 	```
 
-	And compile it:
+	Then we compile `gl4es`:
 	```bash
 	mkdir build
 	cd build
@@ -161,36 +136,16 @@ To connect from another machine with `ssh`:
 
 	```bash
     mv /usr/lib/arm-linux-gnueabihf/libGL.so.1.7.0 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1.7.0
-    rm /usr/lib/arm-linux-gnueabihf/libGL.so /usr/lib/arm-linux-gnueabihf/libGL.so.1
+    rm /usr/lib/arm-linux-gnueabihf/libGL.so.1
     cd ../lib
     cp libGL.so.1 /usr/lib/arm-linux-gnueabihf/
     ln -s /usr/lib/arm-linux-gnueabihf/libGL.so.1 /usr/lib/arm-linux-gnueabihf/libGL.so
     ldconfig
 	```
-
-	And finally we check that everything is fine by running:
-	```bash
-	glxinfo|head -6
-	```
-
-	If you see the following, then you're good to go:
-	```
-	LIBGL: Initialising gl4es
-	LIBGL: v1.1.5 built on <some date>
-	LIBGL: Using GLES 2.0 backend
-	LIBGL: loaded: libGLESv2.so
-	LIBGL: loaded: libEGL.so
-	LIBGL: Using GLES 2.0 backend
-	```
-	(of course the date on the second line will be different for you)
-
-	Running `glmark2` and `glmark2-es2` shoudl show similar performances now.
-	At this stage, your Odroid XU4 also has a full OpenGL support.
-
-11. Install Kodi now:
+11. Install Kodi now and disable the main GUI environment:
 
 	```bash
-    apt install kodi kodi-data kodi-repository-kodi kodi-x11 openbox
+    apt install kodi-fbdev kodi-fbdev-bin kodi-fbdev-data libcec4 ffmpeg libavcodec-extra libavcodec-extra58 libavdevice58 libavfilter-extra libavformat58 libdlna0 libpostproc55 libswresample3 libswscale5 
 	```
 
 14. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
@@ -214,13 +169,6 @@ To connect from another machine with `ssh`:
 	usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse,pulse-access,games kodi
 	```
 
-16. Add options to allow Kodi to start its own X server:
-
-	```bash
-	sed -ie 's/allowed_users=console/allowed_users=anybody/g' /etc/X11/Xwrapper.config
-	sed -ie "\$aneeds_root_rights = yes" /etc/X11/Xwrapper.config
-	```
-
 17. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
 
 	```bash
@@ -236,7 +184,7 @@ To connect from another machine with `ssh`:
 	Group = kodi
 	Type = simple
 	#PAMName = login # you might want to try this one, did not work on all systems
-	ExecStart = /usr/bin/xinit /usr/bin/dbus-launch --exit-with-session openbox --startup /usr/bin/kodi-standalone -- :0 -nolisten tcp vt7
+	ExecStart = /usr/bin/kodi-standalone
 	Restart = on-abort
 	RestartSec = 5
 
@@ -254,17 +202,11 @@ To connect from another machine with `ssh`:
 
 19. On the [Hardkernel Wiki](https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_4.14/20181203#known_issues_and_tips), it is said that a recent Canonical's EGL package blocked access to the Mali GPU. It is sooo true. The fix is as they said:
 	```bash
-	sudo apt install mali-x11 --reinstall
+	apt install mali-x11 --reinstall
 	```
 	At the time of publication (end of April 2019), it fixes the loss of Mali GPU access bug. So it is highly recommended to apply this fix. In fact, if you update the system as I said before, you will have the bug and you will fix it by reinstall `mali-x11` as above.
 
-24.	**From now on you have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, you can follow the rest.
-
-	If you want to stop and enjoy your Odroid XU4 now, you can reboot it:
-
-	```bash
-	sudo reboot
-	```
+24.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
 
 In the next sections, I'll show you how to:
 - install an external USB drive and have it automounted (for Kodi or Mame for example),
