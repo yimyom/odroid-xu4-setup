@@ -13,9 +13,7 @@ This guide has been updated to the latest available Ubuntu version (20.04 as the
 2. [Install an USB external drive on your Odroid XU4](#Install-an-USB-external-drive-on-your-Odroid-XU4)<br/>
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
-5. [Remove unused software to save memory and CPU cycles](#Remove-unused-software-to-save-memory-and-CPU-cycles)<br/>
-6. [Set the clock to your own time zone](#Set-the-clock-to-your-own-time-zone)
-7. [More configuration](#More-configuration)  
+5. [More configuration](#More-configuration)  
 
 ## Install Linux and Kodi on your Odroid XU4
 
@@ -178,7 +176,7 @@ To install all of this, follow the steps:
 	Description = Kodi Media Center
 
 	After = systemd-user-sessions.service network.target sound.target mysql.service dbus.service polkit.service upower.service 
-	Wants = mysql.service
+	Wants = mysql.service pulseaudio.service
 
 	[Service]
 	User = kodi
@@ -211,7 +209,23 @@ To install all of this, follow the steps:
     chmod ugo+x /etc/rc.local
     ```
 
-24.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
+20. Disable the `unattended upgrades` service to avoid packages being installed in the background. It caused a few problems in the past and we want a stable Kodi system for all the family:
+
+    ```bash
+    systemctl stop unattended-upgrades.service
+    systemctl disable unattended-upgrades.service
+    ```
+
+21. Add support for audio and the PulseAudio service
+
+	```bash
+    systemctl --user enable pulseaudio.service
+    ```
+
+    The Kodi service requires the PulseAudio service (cf. the `Wants` line above). PulseAudio comes by default in Ubuntu, so we just need to link to it.
+    When Kodi starts, it will start the PulseAudio service just before and give Kodi a sound service on-demand.
+
+22.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
 
 In the next sections, I'll show you how to:
 - install an external USB drive and have it automounted (for Kodi or Mame for example),
@@ -221,6 +235,31 @@ In the next sections, I'll show you how to:
 
 Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). For the second option, after booting on the Kodi screen, you need to exit Kodi first to get back onto the terminal. After doing what needs to be done (below), just reboot your machine to check everything is fine.
 
+23. Clean up and remove unused services to free up memory and CPU cycles:
+
+    ModemManager is a daemon which controls mobile broadband (2G/3G/4G) devices and connections. The Odroid XU4 is connected to an ethernet (or a wifi if you have one) and does not need a _modem_ connection.
+
+	```bash
+	systemctl stop ModemManager 
+	systemctl disable ModemManager 
+	```
+24. Set the clock to your own time zone
+
+    You can synchronize the clock to a time server on the net and always have your Odroid set to the most accurate time. Moreover, you want to set the clock to your timezone.
+
+    1. First we install an [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol) (Network Time Protocol) client which will connect to time server to get an accurate time
+	```bash
+	apt install chrony
+	```
+
+    2. Then we search for the time zone. It will be something like `Europe/Zurich` or `Pacific/Auckland`. To find yours do:
+	```bash
+	timedatectl list-timezones
+	```
+	Search and note your own time zone. Let's say you live near the North Pole in [Longyearbyen](https://en.wikipedia.org/wiki/Longyearbyen), you will find the time zone in the list given above as `Arctic/Longyearbyen`. Then tune your Odroid XU4 by doing:
+	```bash
+	timedatectl set-timezone Arctic/Longyearbyen
+	```
 ## Install an USB external drive on your Odroid XU4
 
 
@@ -545,78 +584,6 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 	echo "ctrlr myjoyremap" | sudo tee -a /etc/mame/mame.ini
 	```
 
-## Remove unused software to save memory and CPU cycles
-
-This section is not mandatory but you can find it useful to make your Odroid XU4 lighter and more responsive. The XU4 has 2Gb of memory, which (at the time of writing) is good for a Single Board Computer (most of them have 0.5 to 1Gb, but I can see some 2 to 4 Gb finally coming on the market). So memory is a precious resource as well as CPU cycle. You don't want any slowdown of your machine while watching a movie or playing a game.
-I selected a few services which I think are not necessary for a Kodi/Mame installation. Here is the way to stop and disable them. However, we will not uninstall the software, so that you can enable them again, should your needs change in the future.
-
-1. Cups the printing server
-	As you don't really need to print from Kodi or Mame, it's safe to remove the print server (named CUPS):
-	```bash
-	sudo systemctl stop cups
-	sudo systemctl stop cups-browsed
-	sudo systemctl disable cups
-	sudo systemctl disable cups-browsed
-	```
-
-	To re-enable it
-	```bash
-	sudo systemctl enable cups
-	sudo systemctl start cups
-	```
-
-2.  UPower controls the power source. It's useful in a smartphone, a laptop or an embedded system. However, in the case of a Kodi/Mame entertainment system in your living room, the only power source is the socket wall and your Odroid XU4 is supposed to be connected all the time. So you can safely remove this one too:
-	```bash
-	sudo systemctl stop upower
-	sudo systemctl disable upower
-	```
-
-3. Whoopsie is the error reporting daemon for Ubuntu, mainly used by desktop environment when something crashes. As we're only using Kodi, it's not necessary here:
-	```bash
-	sudo systemctl stop whoopsie 
-	sudo systemctl disable whoopsie 
-	```
-
-4. ModemManager is a daemon which controls mobile broadband (2G/3G/4G) devices and connections. The Odroid XU4 is connected to an ethernet (or a wifi if you have one) and does not need a _modem_ connection.
-	```bash
-	sudo systemctl stop ModemManager 
-	sudo systemctl disable ModemManager 
-	```
-5. _unattended-upgrades_ is a daemon to automatically update the system. I like when a computer works for me but in this specific case, we will avoid doing any automatic update. The reason is we want a stable entertainment system for all the family, which is available at any time. We don't want to have to do maintenance, just before launching the family movie, because an update didn't work:
-	```bash
-	sudo systemctl stop unattended-upgrades 
-	sudo systemctl disable unattended-upgrades 
-	```
-
-	If you want to upgrade your Odroid XU4, you can still do it manually by running first an update of the packages' database:
-	```bash
-	sudo apt update
-	```
-
-	Then if you like the list of packages to be updated, run an upgrade:
-	```bash
-	sudo apt upgrade
-	```
-
-	Personally, I'm a big fan of a software called `synaptic` which is a GUI for apt-based systems like Ubutun and Debian. I recommend it.
-
-## Set the clock to your own time zone
-
-You can synchronize the clock to a time server on the net and always have your Odroid set to the most accurate time. Moreover, you want to set the clock to your timezone.
-
-1. First we install an [NTP](https://en.wikipedia.org/wiki/Network_Time_Protocol) (Network Time Protocol) client which will connect to time server to get an accurate time
-	```bash
-	sudo apt install chrony
-	```
-
-2. Then we search for the time zone. It will be something like `Europe/Zurich` or `Pacific/Auckland`. To find yours do:
-	```bash
-	timedatectl list-timezones
-	```
-	Search and note your own time zone. Let's say you live near the North Pole in [Longyearbyen](https://en.wikipedia.org/wiki/Longyearbyen), you will find the time zone in the list given above as `Arctic/Longyearbyen`. Then tune your Odroid XU4 by doing:
-	```bash
-	sudo timedatectl set-timezone Arctic/Longyearbyen
-	```
 
 # More configuration
 
