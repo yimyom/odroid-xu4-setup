@@ -41,6 +41,7 @@ To install all of this, follow the steps:
 	```
 
 4. Put an SD card with enough capacity in your Linux machine
+
 5. Search for the device with `lsblk`
 
 	```bash
@@ -56,8 +57,8 @@ To install all of this, follow the steps:
 6. Write the image to the SD card
 
 	```bash
-	sudo dd if=ubuntu-18.04.1-4.14-mate-odroid-xu4-20181203.img.xz of=/dev/sdX bs=1M conv=fsync status=progress
-	sudo sync
+	dd if=ubuntu-20.04.1-5.4-mate-odroid-xu4-20200818.img.xz of=/dev/sdX bs=1M conv=fsync status=progress
+	sync
 	```
 
 7. Umount your SD card either from your desktop environment or on the command line with. This step is not required but can be necessary:
@@ -223,7 +224,7 @@ To connect from another machine with `ssh`:
 17. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
 
 	```bash
-	cat << EOF | sudo tee /etc/systemd/system/kodi.service
+	cat << EOF | tee /etc/systemd/system/kodi.service
 	[Unit]
 	Description = Kodi Media Center
 
