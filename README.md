@@ -201,6 +201,16 @@ To install all of this, follow the steps:
 	systemctl set-default multi-user.target
 	```
 
+19. Remove the blinking cursor on the Kodi screen. There is an annoying blinking cursor at the top-left corner. This will remove it:
+    
+    ```bash
+    grep -v 'exit 0' /etc/rc.local > /tmp/rc.local
+    echo 'echo 0 > /sys/class/graphics/fbcon/cursor_blink' >> /tmp/rc.local
+    echo 'exit 0' >> /tmp/rc.local
+    mv /tmp/rc.local /etc/rc.local
+    chmod ugo+x /etc/rc.local
+    ```
+
 24.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
 
 In the next sections, I'll show you how to:
@@ -209,7 +219,7 @@ In the next sections, I'll show you how to:
 - install and configure a joystick for Mame
 - remove software and services which are not necessary and use memory and CPU cycle for nothing
 
-Everything can be done either by connecting to your Odroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). If you want to connect on the screen directly, after rebooting your Odroid XU4 on Kodi, you can press `Ctrl+Alt+F1` to switch to a terminal (text screen). At any time, you can go back to Kodi by pressing `Alt+F7`.
+Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). For the second option, after booting on the Kodi screen, you need to exit Kodi first to get back onto the terminal. After doing what needs to be done (below), just reboot your machine to check everything is fine.
 
 ## Install an USB external drive on your Odroid XU4
 
@@ -219,7 +229,7 @@ Everything can be done either by connecting to your Odroid XU4 with `ssh` or on 
 2. Install `usbmount` to automount USB drives:
 
 	```bash
-	sudo apt install usbmount
+	apt install usbmount debhelper build-essential fakeroot
 	```
 
 	There is a bug in the version 0.0.22 of `usbmount` as provided by the stock Ubuntu Linux when connecting 2 USB drives at the same time. The bug has been fixed with `usbmount 0.0.24` which is not yet on the Ubuntu repository. You can upgrade it manually, if you like:
@@ -229,16 +239,15 @@ Everything can be done either by connecting to your Odroid XU4 with `ssh` or on 
 	```bash
 	git clone https://github.com/rbrito/usbmount.git
 	cd usbmount
-	sudo apt-get update && sudo apt-get install -y debhelper build-essential fakeroot
 	dpkg-buildpackage -us -uc -b
 	cd ..
-	sudo dpkg -i usbmount_0.0.24_all.deb
+	dpkg -i usbmount_0.0.24_all.deb
 	```
 
 3. By default, usbmount will mount the external USB drive with the `sync` option. `sync` means that all write access to the disk will be immediately flushed to the disk. And it can dramatically slow down all the disk operations. 
 
 	```bash
-	sudo sed -ie 's/^MOUNTOPTIONS=.*/MOUNTOPTIONS="noexec,nodev,noatime,nodiratime"/' /etc/usbmount/usbmount.conf
+	sed -ie 's/^MOUNTOPTIONS=.*/MOUNTOPTIONS="noexec,nodev,noatime,nodiratime"/' /etc/usbmount/usbmount.conf
 	```
 	I assume it is safe to use the `async` option here because you're not supposed to unplug this disk at any time. When I've done that, the write speed of my external hard drive has been multiplied by 10!
 
