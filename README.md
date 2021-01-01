@@ -87,7 +87,7 @@ To install all of this, follow the steps:
 
 10. Connect as `root` as explained above, either directly or through a SSH connection to your XU4. Alternatively you can connect with the default `odroid` user and open a terminal. Then in the terminal do `sudo bash` to login as `root`.
 
-To connect from another machine with `ssh`:
+    To connect from another machine with `ssh`:
 
     ```bash
     ssh root@192.168.xxx.zzz
