@@ -2,12 +2,9 @@
 **VERSION pre2.0**
 
 This guide will explain how to make a TV box with your ODroid XU4. The first section is the only one you need to read in order to have a fully functional TV box using Kodi.
-The next sections gives extra configuration to set up an external USB drive, a MAME video game console and other topics.
+The next sections give extra configuration to set up an external USB drive, a MAME video game console and other topics.
 
-I describe all the steps to install Ubuntu Linux on an Odroid XU4 and use it as a media and game center using Kodi and Mame.
-Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine. Not all the steps are straightforward and some of them implies that you read another documentation on the web. I did all the research for you and give links to the webpage you will need to follow or simply read in order to understand necessary concepts. The first part on building Kodi is self-contained. The part on Mame will require external readings. The rest is self-contained again.
-
-This guide has been updated to the latest available Ubuntu version (20.04 as the time of writing) and it will use no X11 environment at all to make a very light Kodi server.
+One important feature is this new guide is that we don't use X11 or Wayland but Kodi runs directly on the Linux framebuffer using OpenGL acceleration thanks to the Mali 3d driver. Therefore the final product will be a very fast and light system. It is even possible to use it as a small home server for other purposes, even while playing videos. So all the family will be happy at the same time.
 
 ##### Table of contents
 1. [Install Linux and Kodi on your Odroid XU4](#Install-Linux-and-Kodi-on-your-Odroid-XU4)<br/>
@@ -225,17 +222,7 @@ To install all of this, follow the steps:
     The Kodi service requires the PulseAudio service (cf. the `Wants` line above). PulseAudio comes by default in Ubuntu, so we just need to link to it.
     When Kodi starts, it will start the PulseAudio service just before and give Kodi a sound service on-demand.
 
-22.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
-
-In the next sections, I'll show you how to:
-- install an external USB drive and have it automounted (for Kodi or Mame for example),
-- install and configure Mame and use it from Kodi
-- install and configure a joystick for Mame
-- remove software and services which are not necessary and use memory and CPU cycle for nothing
-
-Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). For the second option, after booting on the Kodi screen, you need to exit Kodi first to get back onto the terminal. After doing what needs to be done (below), just reboot your machine to check everything is fine.
-
-23. Clean up and remove unused services to free up memory and CPU cycles:
+22. Clean up and remove unused services to free up memory and CPU cycles:
 
     ModemManager is a daemon which controls mobile broadband (2G/3G/4G) devices and connections. The Odroid XU4 is connected to an ethernet (or a wifi if you have one) and does not need a _modem_ connection.
 
@@ -243,7 +230,7 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 	systemctl stop ModemManager 
 	systemctl disable ModemManager 
 	```
-24. Set the clock to your own time zone
+23. Set the clock to your own time zone
 
     You can synchronize the clock to a time server on the net and always have your Odroid set to the most accurate time. Moreover, you want to set the clock to your timezone.
 
@@ -260,6 +247,17 @@ Everything can be done either by connecting to your ODroid XU4 with `ssh` or on 
 	```bash
 	timedatectl set-timezone Arctic/Longyearbyen
 	```
+
+24.	**You now have a fully functional Kodi system**. If you want to reboot, your Odroid XU4 will directly start on Kodi. I you want to add more features, like [MAME](https://www.mamedev.org/) ([Mame on Wikipedia](https://en.wikipedia.org/wiki/MAME)), an external USB drive, a joystick, a firewall, just keep reading.
+
+In the next sections, I'll show you how to:
+- install an external USB drive and have it automounted (for Kodi or Mame for example),
+- install and configure Mame and use it from Kodi
+- install and configure a joystick for Mame
+- remove software and services which are not necessary and use memory and CPU cycle for nothing
+
+Everything can be done either by connecting to your ODroid XU4 with `ssh` or on the screen directly (you'll need a keyboard). For the second option, after booting on the Kodi screen, you need to exit Kodi first to get back onto the terminal. After doing what needs to be done (below), just reboot your machine to check everything is fine.
+
 ## Install an USB external drive on your Odroid XU4
 
 
