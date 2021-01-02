@@ -1,7 +1,8 @@
-# odroid-xu4-setup
-**VERSION pre1.2**
+# How to install Kodi and transform your ODroid XU4 into a TV box and media center
+**VERSION pre2.0**
 
-How to set up an Odroid XU4 with Kodi, Mame and an external USB drive
+This guide will explain how to make a TV box with your ODroid XU4. The first section is the only one you need to read in order to have a fully functional TV box using Kodi.
+The next sections gives extra configuration to set up an external USB drive, a MAME video game console and other topics.
 
 I describe all the steps to install Ubuntu Linux on an Odroid XU4 and use it as a media and game center using Kodi and Mame.
 Installing Mame is optional as well as configuring the USB drive, the joystick, etc... You can stop at the Kodi level or go further and have a fully functional video, music and game machine. Not all the steps are straightforward and some of them implies that you read another documentation on the web. I did all the research for you and give links to the webpage you will need to follow or simply read in order to understand necessary concepts. The first part on building Kodi is self-contained. The part on Mame will require external readings. The rest is self-contained again.
@@ -13,7 +14,6 @@ This guide has been updated to the latest available Ubuntu version (20.04 as the
 2. [Install an USB external drive on your Odroid XU4](#Install-an-USB-external-drive-on-your-Odroid-XU4)<br/>
 3. [Install MAME to play arcade games from Kodi](#Install-MAME-to-play-arcade-games-from-Kodi)<br/>
 4. [Install a joystick to play with MAME](#Install-a-joystick-to-play-with-MAME)<br/>
-5. [More configuration](#More-configuration)  
 
 ## Install Linux and Kodi on your Odroid XU4
 
@@ -583,28 +583,6 @@ Ideally, playing with MAME requires a nice joystick. Here are two examples of jo
 	```bash
 	echo "ctrlr myjoyremap" | sudo tee -a /etc/mame/mame.ini
 	```
-
-
-# More configuration
-
-In the following, I'll give a few tricks and tips to improve your configuration in general. In general, it's better to either connect with ssh to your ODroid-XU4 box or simply connect a keyboard. Most of them should be executed as a super user. You can, for example, do the following to open a super-user session, and therefore you won't have to repeat the command `sudo` everytime. Don't forget to log off from the super user when you're done (Ctrl-D or `exit` will do it):
-```bash
-sudo bash
-```
-
-## Upgrading regularly
-```bash
-apt update
-apt upgrade
-```
-Yes, that's it, no need to reboot or anything. Come on, it's Linux. It's simple and efficient. In fact, it's not completely true all the time. The only case in which you have to reboot is when the Linux kernel itself is updated. In practice, if you upgrade services or long-running program like Kodi, you want to make your life simple and you can reboot to relaunch all of them in one go, instead of stopping and restarting them on the terminal. But Linux doesn't require a reboot.
-
-## Unwanted windows' decorations
-After upgrading, I had window decorations around Kodi. Obviously, it's not something I want in a media center. To remove them it's simple:
-```bash
-cd /home/kodi/.config/openbox
-sed -i 's#<applications>#<applications> <application name="*"> <decor>no</decor> </application>#' rc.xml
-```
 
 ---
 ### Support my work by making a small donation
