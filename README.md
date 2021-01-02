@@ -1,5 +1,5 @@
 # How to install Kodi and transform your ODroid XU4 into a TV box and media center
-**VERSION pre2.0**
+**VERSION 2.0 - 2 January 2021**
 
 This guide will explain how to make a TV box with your ODroid XU4. The first section is the only one you need to read in order to have a fully functional TV box using Kodi.
 The next sections give extra configuration to set up an external USB drive, a MAME video game console and other topics.
