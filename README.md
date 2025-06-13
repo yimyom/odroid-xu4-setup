@@ -1,5 +1,5 @@
 # How to install Kodi and transform your ODroid XU4 into a TV box and media center
-**VERSION 2.0 - 2 January 2021**
+**VERSION 3.0 - 13 June 2025**
 
 This guide will explain how to make a TV box with your ODroid XU4. The first section is the only one you need to read in order to have a fully functional TV box using Kodi.
 The next sections give extra configuration to set up an external USB drive, a MAME video game console and other topics.
@@ -19,30 +19,24 @@ To install all of this, follow the steps:
 
 1. The first step is ideally done on another Linux box. If you don't have one yet (_wait,what?_), better to migrate to Linux as soon as you can
 
-	Download the Ubuntu image and its MD5 sum file:
-    - https://dn.odroid.com/5422/ODROID-XU3/Ubuntu/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum
-    - https://dn.odroid.com/5422/ODROID-XU3/Ubuntu/ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
-
-2. Check your image is valid with `md5sum` and compare the result with the content of the previously downloaded md5sum above
-
+	Download the Ubuntu image:
 	```bash
-    md5sum ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz
+	wget https://dn.odroid.com/5422/ODROID-XU3/Ubuntu/ubuntu-24.04-6.6-minimal-odroid-xu4-20240506.img.xz
 	```
 
-    and compare the result with the content of the file `ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz.md5sum`
-
-3. Uncompress the file first you've downloaded:
+2. Uncompress the file first you've downloaded:
 
 	```bash
 	xz -d ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz 
 	```
 
-4. Put an SD card with enough capacity in your Linux machine
+3. Put an SD card with enough capacity in your Linux machine
 
-5. Search for the device with `lsblk`
+4. Search for the device:
 
 	```bash
 	lsblk
+ 	fdisk -l
 	```
 
 	**WARNING**
@@ -51,20 +45,20 @@ To install all of this, follow the steps:
 
 	**WARNING**
 
-6. Write the image to the SD card
+5. Write the image to the SD card
 
 	```bash
-	dd if=ubuntu-20.04.1-5.4-minimal-odroid-xu4-20200812.img.xz of=/dev/sdX bs=1M conv=fsync status=progress
+	dd if=ubuntu-24.04-6.6-minimal-odroid-xu4-20240911.img of=/dev/sdX bs=1M conv=fsync status=progress
 	sync
 	```
 
-7. Umount your SD card either from your desktop environment or on the command line with. This step is not required but can be necessary:
+6. Umount your SD card either from your desktop environment or on the command line with. This step is not required but can be necessary:
 
 	```bash
 	sudo umount /dev/sdX
 	```
 
-8. Insert your SD card in your odroid XU4 and boot your machine
+7. Insert your SD card in your odroid XU4 and boot your machine
 
     Check the release notes pages to find the credentials:
     https://wiki.odroid.com/odroid-xu4/os_images/linux/ubuntu_5.4/minimal/20200812
@@ -72,7 +66,7 @@ To install all of this, follow the steps:
 
 	At this stage you have a fully functional ODroid XU4 machine. The next steps can either be done from your XU4 by connecting a keyboard to it or you can SSH from another machine to the XU4. I recommend using the Ethernet port at first. It is much simpler to configure than a wifi. But both wifi and Ethernet will work.
 
-9. _Optional_: if you want to SSH to your XU4, you must first find the IP address of your XU4:
+8. _Optional_: if you want to SSH to your XU4, you must first find the IP address of your XU4:
 
     ```bash
     ip addr
@@ -80,7 +74,7 @@ To install all of this, follow the steps:
     The IP address is after the `inet` keyboard. The result of the command above gives a list of at least two entries. Usually the first one is called `lo` and is the _loopback_ network interface. It's a fake network interface which creates a network with one machine only. It is used if you want to test a networked program for which the client and the server applications are on the same machine.
     Usually, the second entry is _eth0_ and denotes the Ethernet port of your XU4. It's the one you want and the IP address you need is after the `inet` keyword. Use this address from your other machine to connect to your XU4
 
-10. Connect as `root` as explained above, either directly or through a SSH connection to your XU4. Alternatively you can connect with the default `odroid` user and open a terminal. Then in the terminal do `sudo bash` to login as `root`.
+9. Connect as `root` as explained above, either directly or through a SSH connection to your XU4. Alternatively you can connect with the default `odroid` user and open a terminal. Then in the terminal do `sudo bash` to login as `root`.
 
     To connect from another machine with `ssh`:
 
@@ -90,7 +84,7 @@ To install all of this, follow the steps:
 
     where `xxx` and `zzz` are replaced by the numbers you found doing `ip addr`.
 
-11. Update the packages
+10. Update the packages
 
 	```bash
 	apt update
@@ -107,7 +101,7 @@ To install all of this, follow the steps:
 
     The last command (`autoremove`) is to leave the system in a clean state and use a bit less disk by removing unecessary packages.
 
-12. The Mali graphical driver is installed by default and works well. However, the driver provided by ARM only implement OpenGL ES and not OpenGL. We will use `gl4es` as a wrapper between OpenGL and OpenGL ES and therefore have a hardware-accelerated OpenGL on the Mali GPU in XU4:
+11. The Mali graphical driver is installed by default and works well. However, the driver provided by ARM only implement OpenGL ES and not OpenGL. We will use `gl4es` as a wrapper between OpenGL and OpenGL ES and therefore have a hardware-accelerated OpenGL on the Mali GPU in XU4:
 
 	```bash
 	apt install git cmake xorg-dev gcc g++ build-essential
@@ -133,18 +127,19 @@ To install all of this, follow the steps:
 	```bash
     mv /usr/lib/arm-linux-gnueabihf/libGL.so.1.7.0 /usr/lib/arm-linux-gnueabihf/save.libGL.so.1.7.0
     rm /usr/lib/arm-linux-gnueabihf/libGL.so.1
+    rm /usr/lib/arm-linux-gnueabihf/libGL.so
     cd ../lib
     cp libGL.so.1 /usr/lib/arm-linux-gnueabihf/
     ln -s /usr/lib/arm-linux-gnueabihf/libGL.so.1 /usr/lib/arm-linux-gnueabihf/libGL.so
     ldconfig
 	```
-13. Install Kodi now and disable the main GUI environment:
+12. Install Kodi now and disable the main GUI environment:
 
 	```bash
     apt install kodi-fbdev kodi-fbdev-bin kodi-fbdev-data libcec4 ffmpeg libavcodec-extra libavcodec-extra58 libavdevice58 libavfilter-extra libavformat58 libdlna0 libpostproc55 libswresample3 libswscale5 
 	```
 
-14. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
+13. For security reason, kodi and its associated programs will be run by a user with limited privileges, with no password and automatic login. We will call the user `kodi`:
 
 	```bash
 	adduser --disabled-password --gecos "" kodi
@@ -159,13 +154,13 @@ To install all of this, follow the steps:
 	Copying files from `/etc/skel' ...
 	```
 
-15. Assign some privileges to this user:
+16. Assign some privileges to this user:
 
 	```bash
 	usermod -a -G cdrom,video,plugdev,users,dialout,dip,input,netdev,audio,pulse,pulse-access,games kodi
 	```
 
-16. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
+17. Add the Kodi service to `systemd` (better to copy and paste the following rather than typing it):
 
 	```bash
 	cat << EOF | tee /etc/systemd/system/kodi.service
